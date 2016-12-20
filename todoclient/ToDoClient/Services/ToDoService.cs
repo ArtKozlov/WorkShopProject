@@ -92,8 +92,8 @@ namespace ToDoClient.Services
             item.ToDoId = _itemRepository.GetItems(item.UserId).Last().ToDoId+1;
             _itemRepository.Create(item.ToItem());
             _itemRepository.Save();
-            ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
-                .Result.EnsureSuccessStatusCode());
+            //ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
+            //    .Result.EnsureSuccessStatusCode());
 
         }
 
@@ -105,8 +105,8 @@ namespace ToDoClient.Services
         {
             _itemRepository.Update(item.ToItem());
             _itemRepository.Save();
-            ThreadPool.QueueUserWorkItem(t => httpClient.PutAsJsonAsync(serviceApiUrl + UpdateUrl, item)
-            .Result.EnsureSuccessStatusCode());
+            //ThreadPool.QueueUserWorkItem(t => httpClient.PutAsJsonAsync(serviceApiUrl + UpdateUrl, item)
+            //.Result.EnsureSuccessStatusCode());
 
         }
 
@@ -118,8 +118,8 @@ namespace ToDoClient.Services
         {
             _itemRepository.Delete(id);
             _itemRepository.Save();
-            ThreadPool.QueueUserWorkItem(t => httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
-                .Result.EnsureSuccessStatusCode());
+            //ThreadPool.QueueUserWorkItem(t => httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
+            //    .Result.EnsureSuccessStatusCode());
 
 
         }
