@@ -25,14 +25,13 @@ namespace DAL.Repositories
 
             _context.Items.Add(item);
             _context.SaveChanges();
-            _context.Dispose();
 
 
         }
 
         public void Delete(int key)
         {
-            var item = _context.Items.FirstOrDefault(i => i.Id == key);
+            var item = _context.Items.FirstOrDefault(i => i.ToDoId == key);
             if (!ReferenceEquals(item, null))
             {
                 _context.Items.Remove(item);
@@ -41,29 +40,32 @@ namespace DAL.Repositories
             }
         }
 
-        public IEnumerable<Item> GetAll()
+
+        public Item GetById(int key)
         {
-            var result = _context.Items.Select(i => i);
+            var result = _context.Items.FirstOrDefault(i => i.UserId == key);
 
             return result;
         }
 
-        public Item GetById(int key)
+        public IEnumerable<Item> GetItems(int userId)
         {
-            var result = _context.Items.FirstOrDefault(i => i.Id == key);
+            var result = _context.Items.Where(i => i.UserId == userId);
 
             return result;
         }
 
         public void Update(Item item)
         {
-            var entity = _context.Items.Find(item.Id);
+            var entity = _context.Items.FirstOrDefault(i => i.ToDoId == item.ToDoId);
             entity.Name = item.Name;
-            entity.IsCompleted = item.IsCompleted;
-            entity.User = item.User;
+            entity.IsCompleted = item.IsCompleted;           
+            entity.UserId = item.UserId;
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
             _context.Dispose();
         }
+
+
     }
 }

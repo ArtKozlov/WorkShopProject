@@ -8,6 +8,7 @@ using DAL.Interfaces;
 using DAL.Repositories;
 using todoclient.Mapping;
 using System.Linq;
+using System.Threading;
 
 namespace ToDoClient.Services
 {
@@ -42,14 +43,14 @@ namespace ToDoClient.Services
         private const string DeleteUrl = "ToDos/{0}";
 
         private readonly HttpClient httpClient;
-        private IUserRepository _userRepository;
+        private IItemRepository _itemRepository;
         /// <summary>
         /// Creates the service.
         /// </summary>
         public ToDoService()
         {
             httpClient = new HttpClient();
-            _userRepository = new UserRepository();
+            _itemRepository = new ItemRepository();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         }
@@ -61,10 +62,24 @@ namespace ToDoClient.Services
         /// <returns>The list of todos.</returns>
         public IList<ToDoItemViewModel> GetItems(int userId)
         {
-            var user = _userRepository.GetById(userId);
-            return user.Items.Select(i => i.ToViewModel()).ToList();
-            //var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
-            //return JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+            var itemResult = _itemRepository.GetItems(userId).Select(i => i.ToViewModel()).ToList();
+
+            if (itemResult.Count != 0)
+            {
+                return itemResult;
+            }
+            else
+            {
+                var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
+                var userViewItems = JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+                var items = userViewItems.Select(i => i.ToItem()).ToList();
+                foreach (var elem in items)
+                {
+                    _itemRepository.Create(elem);
+                }
+                return userViewItems;
+            }
+
         }
 
         /// <summary>
@@ -73,8 +88,11 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to create.</param>
         public void CreateItem(ToDoItemViewModel item)
         {
-            httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
-                .Result.EnsureSuccessStatusCode();
+            _itemRepository.Create(item.ToItem());
+
+            ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
+                .Result.EnsureSuccessStatusCode());
+
         }
 
         /// <summary>
@@ -83,8 +101,11 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to update.</param>
         public void UpdateItem(ToDoItemViewModel item)
         {
-            httpClient.PutAsJsonAsync(serviceApiUrl + UpdateUrl, item)
-                .Result.EnsureSuccessStatusCode();
+            _itemRepository.Update(item.ToItem());
+
+            ThreadPool.QueueUserWorkItem(t => httpClient.PutAsJsonAsync(serviceApiUrl + UpdateUrl, item)
+            .Result.EnsureSuccessStatusCode());
+
         }
 
         /// <summary>
@@ -93,8 +114,12 @@ namespace ToDoClient.Services
         /// <param name="id">The todo Id to delete.</param>
         public void DeleteItem(int id)
         {
-            httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
-                .Result.EnsureSuccessStatusCode();
+            _itemRepository.Delete(id);
+
+            ThreadPool.QueueUserWorkItem(t => httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
+                .Result.EnsureSuccessStatusCode());
+
+            ;
         }
     }
 }

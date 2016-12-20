@@ -12,53 +12,18 @@ namespace DAL.Context
 {
     public class ToDoListContext : DbContext
     {
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public DbSet<Item> Items { get; set; }
 
 
         static ToDoListContext()
         {
-            Database.SetInitializer(new ToDoListDBInitializer());
         }
 
         public ToDoListContext()
             : base("name=ToDoListDB")
         {
-
         }
+        
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasMany(i => i.Items)
-                .WithRequired(t => t.User);
-        }
-
-        private class ToDoListDBInitializer : DropCreateDatabaseIfModelChanges<ToDoListContext>
-        {
-            /// <summary>
-            /// The service URL.
-            /// </summary>
-            private readonly string serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
-
-            /// <summary>
-            /// The url for getting all todos.
-            /// </summary>
-            private const string GetAllUrl = "ToDos?userId={0}";
-
-            private readonly HttpClient httpClient;
-
-            protected override void Seed(ToDoListContext db)
-            {
-                var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, 0)).Result;
-                var result = JsonConvert.DeserializeObject<IList<Item>>(dataAsString);
-                foreach(var item in result)
-                {
-                    db.Items.Add(item);
-                }
-                
-                db.SaveChanges();
-            }
-        }
     }
 }

@@ -14,8 +14,6 @@ namespace ToDoClient.Models
         /// To do identifier.
         /// </value>
         public int ToDoId { get; set; }
-
-
         /// <summary>
         /// Gets or sets the user identifier.
         /// </summary>

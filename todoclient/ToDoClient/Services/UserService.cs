@@ -1,8 +1,11 @@
-﻿using System;
+﻿using DAL.Interfaces;
+using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+using DAL.Entities;
+using DAL.Repositories;
 
 namespace ToDoClient.Services
 {
@@ -16,6 +19,7 @@ namespace ToDoClient.Services
         /// </summary>
         private readonly string serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
 
+        private IItemRepository _itemRepository;
         /// <summary>
         /// The url for users' creation.
         /// </summary>
@@ -29,6 +33,7 @@ namespace ToDoClient.Services
         public UserService()
         {
             httpClient = new HttpClient();
+            _itemRepository = new ItemRepository();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -41,7 +46,8 @@ namespace ToDoClient.Services
         {
             var response = httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, userName).Result;
             response.EnsureSuccessStatusCode();
-            return response.Content.ReadAsAsync<int>().Result;
+            var result = response.Content.ReadAsAsync<int>().Result;
+            return result;
         }
 
         /// <summary>
@@ -65,8 +71,8 @@ namespace ToDoClient.Services
                 };
 
                 HttpContext.Current.Response.SetCookie(cookie);
-            }
 
+            }
             return userId;
         }
     }

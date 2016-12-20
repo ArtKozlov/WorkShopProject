@@ -7,12 +7,12 @@ using DAL.Entities;
 
 namespace DAL.Interfaces
 {
-    public interface IItemRepository
+    public interface IItemRepository 
     {
-        IEnumerable<Item> GetAll();
-        Item GetById(int key);
         void Create(Item e);
-        void Delete(int key);
         void Update(Item e);
+        Item GetById(int key);
+        void Delete(int key);
+        IEnumerable<Item> GetItems(int userId);
     }
 }

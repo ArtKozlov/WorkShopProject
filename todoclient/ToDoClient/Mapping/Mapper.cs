@@ -10,30 +10,34 @@ namespace todoclient.Mapping
 {
     public static class Mapper
     {
-        #region to ViewModel mapping
-        //public static User ToTaskDto(this ToDoItemViewModel itemEntity)
-        //{
-        //    if (ReferenceEquals(itemEntity, null))
-        //        return null;
-        //    return new User()
-        //    {
-        //        Id = itemEntity.ToDoId,
-        //        Name = itemEntity.
-        //    };
-        //}
 
-        public static ToDoItemViewModel ToViewModel(this Item toDoItemViewModel)
+        public static Item ToItem(this ToDoItemViewModel toDoItemViewModel)
         {
             if (ReferenceEquals(toDoItemViewModel, null))
                 return null;
-            
-                return new ToDoItemViewModel()
-                {
-                    ToDoId = toDoItemViewModel.Id,
-                    Name = toDoItemViewModel.Name,
-                    IsCompleted = toDoItemViewModel.IsCompleted,
-                    UserId = toDoItemViewModel.Id
-                };
+
+            return new Item()
+            {
+                ToDoId = toDoItemViewModel.ToDoId,
+                Name = toDoItemViewModel.Name,
+                IsCompleted = toDoItemViewModel.IsCompleted,
+                UserId = toDoItemViewModel.UserId
+            };
+
+        }
+
+        public static ToDoItemViewModel ToViewModel(this Item toDoItem)
+        {
+            if (ReferenceEquals(toDoItem, null))
+                return null;
+
+            return new ToDoItemViewModel()
+            {
+                ToDoId = toDoItem.ToDoId,
+                Name = toDoItem.Name,
+                IsCompleted = toDoItem.IsCompleted,
+                UserId = toDoItem.UserId
+            };
 
         }
     }
