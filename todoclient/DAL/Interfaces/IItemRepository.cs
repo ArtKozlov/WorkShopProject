@@ -14,5 +14,6 @@ namespace DAL.Interfaces
         Item GetById(int key);
         void Delete(int key);
         IEnumerable<Item> GetItems(int userId);
+        void Save();
     }
 }

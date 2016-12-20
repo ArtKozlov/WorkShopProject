@@ -24,7 +24,7 @@ namespace DAL.Repositories
                 throw new ArgumentNullException();
 
             _context.Items.Add(item);
-            _context.SaveChanges();
+           // _context.SaveChanges();
 
 
         }
@@ -35,8 +35,8 @@ namespace DAL.Repositories
             if (!ReferenceEquals(item, null))
             {
                 _context.Items.Remove(item);
-                _context.SaveChanges();
-                _context.Dispose();
+                //_context.SaveChanges();
+                //_context.Dispose();
             }
         }
 
@@ -62,10 +62,15 @@ namespace DAL.Repositories
             entity.IsCompleted = item.IsCompleted;           
             entity.UserId = item.UserId;
             _context.Entry(entity).State = EntityState.Modified;
+            //_context.SaveChanges();
+            //_context.Dispose();
+        }
+
+        public void Save()
+        {
             _context.SaveChanges();
             _context.Dispose();
         }
-
 
     }
 }
