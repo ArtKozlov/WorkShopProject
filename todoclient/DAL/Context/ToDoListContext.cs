@@ -46,21 +46,6 @@ namespace DAL.Context
             /// </summary>
             private const string GetAllUrl = "ToDos?userId={0}";
 
-            /// <summary>
-            /// The url for updating a todo.
-            /// </summary>
-            private const string UpdateUrl = "ToDos";
-
-            /// <summary>
-            /// The url for a todo's creation.
-            /// </summary>
-            private const string CreateUrl = "ToDos";
-
-            /// <summary>
-            /// The url for a todo's deletion.
-            /// </summary>
-            private const string DeleteUrl = "ToDos/{0}";
-
             private readonly HttpClient httpClient;
 
             protected override void Seed(ToDoListContext db)

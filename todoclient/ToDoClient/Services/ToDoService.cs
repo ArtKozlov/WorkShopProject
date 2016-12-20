@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using ToDoClient.Models;
 using DAL.Interfaces;
 using DAL.Repositories;
+using todoclient.Mapping;
+using System.Linq;
 
 namespace ToDoClient.Services
 {
@@ -60,7 +62,7 @@ namespace ToDoClient.Services
         public IList<ToDoItemViewModel> GetItems(int userId)
         {
             var user = _userRepository.GetById(userId);
-            return user.Items;
+            return user.Items.Select(i => i.ToViewModel()).ToList();
             //var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
             //return JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
         }
