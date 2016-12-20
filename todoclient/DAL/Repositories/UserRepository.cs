@@ -26,6 +26,12 @@ namespace DAL.Repositories
             _context.SaveChanges();
             _context.Dispose();
         }
-        
+        public User GetById(int key)
+        {
+            var result = _context.Users.FirstOrDefault(u => u.Id == key);
+
+            return result;
+        }
+
     }
 }

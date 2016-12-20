@@ -10,5 +10,7 @@ namespace DAL.Interfaces
     public interface IUserRepository 
     {
         void Create(User e);
+
+        User GetById(int key);
     }
 }

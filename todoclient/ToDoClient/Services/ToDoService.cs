@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using ToDoClient.Models;
+using DAL.Interfaces;
+using DAL.Repositories;
 
 namespace ToDoClient.Services
 {
@@ -38,14 +40,16 @@ namespace ToDoClient.Services
         private const string DeleteUrl = "ToDos/{0}";
 
         private readonly HttpClient httpClient;
-
+        private IUserRepository _userRepository;
         /// <summary>
         /// Creates the service.
         /// </summary>
         public ToDoService()
         {
             httpClient = new HttpClient();
+            _userRepository = new UserRepository();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
         }
 
         /// <summary>
@@ -55,8 +59,10 @@ namespace ToDoClient.Services
         /// <returns>The list of todos.</returns>
         public IList<ToDoItemViewModel> GetItems(int userId)
         {
-            var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
-            return JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+            var user = _userRepository.GetById(userId);
+            return user.Items;
+            //var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
+            //return JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
         }
 
         /// <summary>
