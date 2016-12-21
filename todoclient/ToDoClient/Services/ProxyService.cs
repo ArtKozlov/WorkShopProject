@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Web;
+using Newtonsoft.Json;
+using todoclient.Mapping;
+using ToDoClient.Models;
 
 namespace todoclient.Services
 {
@@ -51,12 +54,27 @@ namespace todoclient.Services
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void UploadDB()
+        public void UploadDB(int userId)
         {
-            var listUsers = _context.Items.GroupBy(i => i.UserId).Select(i => i).ToList();
-            var 
-            ThreadPool.QueueUserWorkItem(t => httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
-                .Result.EnsureSuccessStatusCode());
+            while (true)
+            {
+                Thread.Sleep(30000);
+                var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
+                var userViewItems = JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+                var itemsIds = userViewItems.Select(i => i.ToDoId).ToList();
+                foreach (var id in itemsIds)
+                {
+                    httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
+                            .Result.EnsureSuccessStatusCode();
+                }
+                var listItems = _itemRepository.GetItems(userId).Where(i => i.UserId == userId).Select(i => i.ToViewModel()).ToList();
+                foreach (var item in listItems)
+                {
+                    ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
+                        .Result.EnsureSuccessStatusCode());
+                }
+
+            }
         }
     }
 }

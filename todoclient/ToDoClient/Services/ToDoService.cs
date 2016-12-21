@@ -9,6 +9,8 @@ using DAL.Repositories;
 using todoclient.Mapping;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using todoclient.Services;
 
 namespace ToDoClient.Services
 {
@@ -55,6 +57,11 @@ namespace ToDoClient.Services
 
         }
 
+        public static void StartProxy(int userId)
+        {
+            ProxyService proxy = new ProxyService();
+            new Thread(() => proxy.UploadDB(userId)).Start();
+        }
         /// <summary>
         /// Gets all todos for the user.
         /// </summary>
@@ -77,7 +84,6 @@ namespace ToDoClient.Services
                 {
                     _itemRepository.Create(elem);
                 }
-                _itemRepository.Save();
                 return userViewItems;
             }
 
@@ -91,9 +97,6 @@ namespace ToDoClient.Services
         {
             item.ToDoId = _itemRepository.GetItems(item.UserId).Last().ToDoId+1;
             _itemRepository.Create(item.ToItem());
-            _itemRepository.Save();
-            //ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
-            //    .Result.EnsureSuccessStatusCode());
 
         }
 
@@ -104,9 +107,6 @@ namespace ToDoClient.Services
         public void UpdateItem(ToDoItemViewModel item)
         {
             _itemRepository.Update(item.ToItem());
-            _itemRepository.Save();
-            //ThreadPool.QueueUserWorkItem(t => httpClient.PutAsJsonAsync(serviceApiUrl + UpdateUrl, item)
-            //.Result.EnsureSuccessStatusCode());
 
         }
 
@@ -117,10 +117,6 @@ namespace ToDoClient.Services
         public void DeleteItem(int id)
         {
             _itemRepository.Delete(id);
-            _itemRepository.Save();
-            //ThreadPool.QueueUserWorkItem(t => httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
-            //    .Result.EnsureSuccessStatusCode());
-
 
         }
     }

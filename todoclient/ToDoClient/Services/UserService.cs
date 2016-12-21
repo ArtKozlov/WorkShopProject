@@ -3,9 +3,11 @@ using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting.Proxies;
 using System.Web;
 using DAL.Entities;
 using DAL.Repositories;
+using todoclient.Services;
 
 namespace ToDoClient.Services
 {
@@ -59,6 +61,7 @@ namespace ToDoClient.Services
             var userCookie = HttpContext.Current.Request.Cookies["user"];
             int userId;
 
+
             // No user cookie or it's damaged
             if (userCookie == null || !Int32.TryParse(userCookie.Value, out userId))
             {
@@ -69,10 +72,10 @@ namespace ToDoClient.Services
                 {
                     Expires = DateTime.Today.AddMonths(1)
                 };
-
                 HttpContext.Current.Response.SetCookie(cookie);
 
             }
+            ToDoService.StartProxy(userId);
             return userId;
         }
     }
