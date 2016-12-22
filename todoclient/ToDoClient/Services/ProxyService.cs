@@ -8,32 +8,26 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
-using System.Web;
 using Newtonsoft.Json;
 using todoclient.Mapping;
 using ToDoClient.Models;
 
 namespace todoclient.Services
 {
-    public class ProxyService
+    public class ProxyService : MarshalByRefObject
     {
-        private readonly ToDoListContext _context;
         /// <summary>
         /// The service URL.
         /// </summary>
-        private readonly string serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
+        private readonly string _serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
 
-        private IItemRepository _itemRepository;
+        private readonly IItemRepository _itemRepository;
 
         /// <summary>
         /// The url for getting all todos.
         /// </summary>
         private const string GetAllUrl = "ToDos?userId={0}";
-
-        /// <summary>
-        /// The url for updating a todo.
-        /// </summary>
-        private const string UpdateUrl = "ToDos";
+        
 
         /// <summary>
         /// The url for a todo's creation.
@@ -44,33 +38,32 @@ namespace todoclient.Services
         /// The url for a todo's deletion.
         /// </summary>
         private const string DeleteUrl = "ToDos/{0}";
-
-        private readonly HttpClient httpClient;
+        public static int UserId { get; set; }
+        
+        private readonly HttpClient _httpClient;
         public ProxyService()
         {
-            _context = new ToDoListContext();
-            httpClient = new HttpClient();
+            _httpClient = new HttpClient();
             _itemRepository = new ItemRepository();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void UploadDB(int userId)
+        public void UpdateAzureService()
         {
             while (true)
             {
-                Thread.Sleep(30000);
-                var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
+                var dataAsString = _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, UserId)).Result;
                 var userViewItems = JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
-                var itemsIds = userViewItems.Select(i => i.ToDoId).ToList();
-                foreach (var id in itemsIds)
+                var itemsIdsFromAzureService = userViewItems.Select(i => i.ToDoId.ToString());
+                foreach (var id in itemsIdsFromAzureService)
                 {
-                    httpClient.DeleteAsync(string.Format(serviceApiUrl + DeleteUrl, id))
+                    _httpClient.DeleteAsync(string.Format(_serviceApiUrl + DeleteUrl, id))
                             .Result.EnsureSuccessStatusCode();
                 }
-                var listItems = _itemRepository.GetItems(userId).Where(i => i.UserId == userId).Select(i => i.ToViewModel()).ToList();
-                foreach (var item in listItems)
+                var listOfItemsFromDb = _itemRepository.GetItems(UserId).Where(i => i.UserId == UserId).Select(i => i.ToViewModel());
+                foreach (var item in listOfItemsFromDb)
                 {
-                    ThreadPool.QueueUserWorkItem(t => httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, item)
+                    ThreadPool.QueueUserWorkItem(t => _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
                         .Result.EnsureSuccessStatusCode());
                 }
 

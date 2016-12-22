@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -8,8 +10,9 @@ using DAL.Interfaces;
 using DAL.Repositories;
 using todoclient.Mapping;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
+using DAL.Entities;
 using todoclient.Services;
 
 namespace ToDoClient.Services
@@ -22,46 +25,41 @@ namespace ToDoClient.Services
         /// <summary>
         /// The service URL.
         /// </summary>
-        private readonly string serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
+        private readonly string _serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
 
         /// <summary>
         /// The url for getting all todos.
         /// </summary>
         private const string GetAllUrl = "ToDos?userId={0}";
 
-        /// <summary>
-        /// The url for updating a todo.
-        /// </summary>
-        private const string UpdateUrl = "ToDos";
 
-        /// <summary>
-        /// The url for a todo's creation.
-        /// </summary>
-        private const string CreateUrl = "ToDos";
+        private readonly HttpClient _httpClient;
 
-        /// <summary>
-        /// The url for a todo's deletion.
-        /// </summary>
-        private const string DeleteUrl = "ToDos/{0}";
+        private readonly IItemRepository _itemRepository;
 
-        private readonly HttpClient httpClient;
-        private IItemRepository _itemRepository;
         /// <summary>
         /// Creates the service.
         /// </summary>
         public ToDoService()
         {
-            httpClient = new HttpClient();
+            _httpClient = new HttpClient();
             _itemRepository = new ItemRepository();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         }
 
-        public static void StartProxy(int userId)
+        static ToDoService()
         {
-            ProxyService proxy = new ProxyService();
-            new Thread(() => proxy.UploadDB(userId)).Start();
+            StartProxy();
         }
+
+        public static void StartProxy()
+        {
+
+            ProxyService proxy = new ProxyService();
+            new Thread(() => proxy.UpdateAzureService()).Start();
+        }
+
         /// <summary>
         /// Gets all todos for the user.
         /// </summary>
@@ -71,21 +69,26 @@ namespace ToDoClient.Services
         {
             var itemResult = _itemRepository.GetItems(userId).Select(i => i.ToViewModel()).ToList();
 
+
             if (itemResult.Count != 0)
             {
                 return itemResult;
             }
-            else
+
+            string dataAsString = 
+                _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
+
+            IList<ToDoItemViewModel> userViewItems =
+                JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+
+            List<Item> items = userViewItems.Select(i => i.ToItem()).ToList();
+
+            foreach (Item elem in items)
             {
-                var dataAsString = httpClient.GetStringAsync(string.Format(serviceApiUrl + GetAllUrl, userId)).Result;
-                var userViewItems = JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
-                var items = userViewItems.Select(i => i.ToItem()).ToList();
-                foreach (var elem in items)
-                {
-                    _itemRepository.Create(elem);
-                }
-                return userViewItems;
+                _itemRepository.Create(elem);
             }
+
+            return userViewItems;
 
         }
 
@@ -95,7 +98,7 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to create.</param>
         public void CreateItem(ToDoItemViewModel item)
         {
-            item.ToDoId = _itemRepository.GetItems(item.UserId).Last().ToDoId+1;
+
             _itemRepository.Create(item.ToItem());
 
         }

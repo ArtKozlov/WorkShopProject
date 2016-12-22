@@ -10,8 +10,7 @@ namespace DAL.Entities
 {
     public class Item
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
+        public int Id { get; set; }
         public int ToDoId { get; set; }
         public string Name { get; set; }
         public bool IsCompleted { get; set; }

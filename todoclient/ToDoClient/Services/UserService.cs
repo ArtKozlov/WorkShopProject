@@ -19,24 +19,22 @@ namespace ToDoClient.Services
         /// <summary>
         /// The service URL.
         /// </summary>
-        private readonly string serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
-
-        private IItemRepository _itemRepository;
+        private readonly string _serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
+        
         /// <summary>
         /// The url for users' creation.
         /// </summary>
         private const string CreateUrl = "Users";
 
-        private readonly HttpClient httpClient;
+        private readonly HttpClient _httpClient;
         
         /// <summary>
         /// Creates the service.
         /// </summary>
         public UserService()
         {
-            httpClient = new HttpClient();
-            _itemRepository = new ItemRepository();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace ToDoClient.Services
         /// <returns>The User Id.</returns>
         public int CreateUser(string userName)
         {
-            var response = httpClient.PostAsJsonAsync(serviceApiUrl + CreateUrl, userName).Result;
+            var response = _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, userName).Result;
             response.EnsureSuccessStatusCode();
             var result = response.Content.ReadAsAsync<int>().Result;
             return result;
@@ -75,7 +73,7 @@ namespace ToDoClient.Services
                 HttpContext.Current.Response.SetCookie(cookie);
 
             }
-            ToDoService.StartProxy(userId);
+
             return userId;
         }
     }

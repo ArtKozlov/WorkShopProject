@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using todoclient.Services;
 using ToDoClient.Models;
 using ToDoClient.Services;
 
@@ -10,8 +11,8 @@ namespace ToDoClient.Controllers
     /// </summary>
     public class ToDosController : ApiController
     {
-        private readonly ToDoService todoService = new ToDoService();
-        private readonly UserService userService = new UserService();
+        private readonly ToDoService _todoService = new ToDoService();
+        private readonly UserService _userService = new UserService();
 
         /// <summary>
         /// Returns all todo-items for the current user.
@@ -19,8 +20,9 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<ToDoItemViewModel> Get()
         {
-            var userId = userService.GetOrCreateUser();
-            return todoService.GetItems(userId);
+            var userId = _userService.GetOrCreateUser();
+            ProxyService.UserId = userId;
+            return _todoService.GetItems(userId);
         }
 
         /// <summary>
@@ -29,8 +31,8 @@ namespace ToDoClient.Controllers
         /// <param name="todo">The todo-item to update.</param>
         public void Put(ToDoItemViewModel todo)
         {
-            todo.UserId = userService.GetOrCreateUser();
-            todoService.UpdateItem(todo);
+            todo.UserId = _userService.GetOrCreateUser();
+            _todoService.UpdateItem(todo);
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace ToDoClient.Controllers
         /// <param name="id">The todo item identifier.</param>
         public void Delete(int id)
         {
-            todoService.DeleteItem(id);
+            _todoService.DeleteItem(id);
         }
 
         /// <summary>
@@ -48,8 +50,8 @@ namespace ToDoClient.Controllers
         /// <param name="todo">The todo-item to create.</param>
         public void Post(ToDoItemViewModel todo)
         {
-            todo.UserId = userService.GetOrCreateUser();
-            todoService.CreateItem(todo);
+            todo.UserId = _userService.GetOrCreateUser();
+            _todoService.CreateItem(todo);
         }
     }
 }
