@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Http;
 using todoclient.Services;
 using ToDoClient.Models;
@@ -21,7 +22,6 @@ namespace ToDoClient.Controllers
         public IList<ToDoItemViewModel> Get()
         {
             var userId = _userService.GetOrCreateUser();
-            ProxyService.UserId = userId;
             return _todoService.GetItems(userId);
         }
 

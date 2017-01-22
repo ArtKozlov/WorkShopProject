@@ -37,6 +37,7 @@ namespace ToDoClient.Services
 
         private readonly IItemRepository _itemRepository;
 
+        private ProxyService _proxyService;
         /// <summary>
         /// Creates the service.
         /// </summary>
@@ -48,18 +49,6 @@ namespace ToDoClient.Services
 
         }
 
-        static ToDoService()
-        {
-            StartProxy();
-        }
-
-        public static void StartProxy()
-        {
-
-            ProxyService proxy = new ProxyService();
-            new Thread(() => proxy.UpdateAzureService()).Start();
-        }
-
         /// <summary>
         /// Gets all todos for the user.
         /// </summary>
@@ -69,13 +58,16 @@ namespace ToDoClient.Services
         {
             var itemResult = _itemRepository.GetItems(userId).Select(i => i.ToViewModel()).ToList();
 
-
             if (itemResult.Count != 0)
             {
+                if(!ProxyService.listOfUsersId.Contains(userId))
+                    ProxyService.listOfUsersId.Enqueue(userId);
+
+                _proxyService = ProxyService.GetInstance();
                 return itemResult;
             }
 
-            string dataAsString = 
+            string dataAsString =
                 _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
 
             IList<ToDoItemViewModel> userViewItems =
