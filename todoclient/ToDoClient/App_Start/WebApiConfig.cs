@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Microsoft.Practices.Unity;
+using todoclient.App_Start;
+using todoclient.DependencyResolver;
 
 namespace todoclient
 {
@@ -19,6 +19,10 @@ namespace todoclient
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            IUnityContainer container = UnityConfig.BuildUnityContainer();
+            config.DependencyResolver = new UnityResolver(container);
+
         }
     }
 }

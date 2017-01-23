@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Proxies;
 using System.Web;
 using DAL.Entities;
 using DAL.Repositories;
+using todoclient.Interfaces;
 using todoclient.Services;
 
 namespace ToDoClient.Services
@@ -14,7 +15,7 @@ namespace ToDoClient.Services
     /// <summary>
     /// Works with Users backend.
     /// </summary>
-    public class UserService
+    public class UserService : IUserService
     {
         /// <summary>
         /// The service URL.

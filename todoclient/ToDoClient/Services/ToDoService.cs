@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -10,9 +9,8 @@ using DAL.Interfaces;
 using DAL.Repositories;
 using todoclient.Mapping;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using DAL.Entities;
+using todoclient.Interfaces;
 using todoclient.Services;
 
 namespace ToDoClient.Services
@@ -20,7 +18,7 @@ namespace ToDoClient.Services
     /// <summary>
     /// Works with ToDo backend.
     /// </summary>
-    public class ToDoService
+    public class ToDoService : IToDoService
     {
         /// <summary>
         /// The service URL.
@@ -41,10 +39,10 @@ namespace ToDoClient.Services
         /// <summary>
         /// Creates the service.
         /// </summary>
-        public ToDoService()
+        public ToDoService(IItemRepository itemRepository)
         {
             _httpClient = new HttpClient();
-            _itemRepository = new ItemRepository();
+            _itemRepository = itemRepository;
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         }

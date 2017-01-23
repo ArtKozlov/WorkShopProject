@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
-using todoclient.Services;
+using todoclient.Interfaces;
 using ToDoClient.Models;
-using ToDoClient.Services;
 
 namespace ToDoClient.Controllers
 {
@@ -12,8 +11,14 @@ namespace ToDoClient.Controllers
     /// </summary>
     public class ToDosController : ApiController
     {
-        private readonly ToDoService _todoService = new ToDoService();
-        private readonly UserService _userService = new UserService();
+        private readonly IToDoService _toDoService;
+        private readonly IUserService _userService;
+
+        public ToDosController(IToDoService toDoService, IUserService userService)
+        {
+            _toDoService = toDoService;
+            _userService = userService;
+        }
 
         /// <summary>
         /// Returns all todo-items for the current user.
@@ -22,7 +27,7 @@ namespace ToDoClient.Controllers
         public IList<ToDoItemViewModel> Get()
         {
             var userId = _userService.GetOrCreateUser();
-            return _todoService.GetItems(userId);
+            return _toDoService.GetItems(userId);
         }
 
         /// <summary>
@@ -32,7 +37,7 @@ namespace ToDoClient.Controllers
         public void Put(ToDoItemViewModel todo)
         {
             todo.UserId = _userService.GetOrCreateUser();
-            _todoService.UpdateItem(todo);
+            _toDoService.UpdateItem(todo);
         }
 
         /// <summary>
@@ -41,7 +46,7 @@ namespace ToDoClient.Controllers
         /// <param name="id">The todo item identifier.</param>
         public void Delete(int id)
         {
-            _todoService.DeleteItem(id);
+            _toDoService.DeleteItem(id);
         }
 
         /// <summary>
@@ -51,7 +56,7 @@ namespace ToDoClient.Controllers
         public void Post(ToDoItemViewModel todo)
         {
             todo.UserId = _userService.GetOrCreateUser();
-            _todoService.CreateItem(todo);
+            _toDoService.CreateItem(todo);
         }
     }
 }
