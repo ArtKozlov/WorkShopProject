@@ -14,7 +14,7 @@ using ToDoClient.Models;
 
 namespace todoclient.Services
 {
-    public class ProxyService : MarshalByRefObject
+    public class ProxyService
     {
         /// <summary>
         /// The service URL.
@@ -38,15 +38,18 @@ namespace todoclient.Services
         /// The url for a todo's deletion.
         /// </summary>
         private const string DeleteUrl = "ToDos/{0}";
+
         public static Queue<int> listOfUsersId = new Queue<int>();
+
         private Thread ProxyThread { get; set; }
 
         private readonly HttpClient _httpClient;
+
         private static ProxyService instance;
 
         private static object syncRoot = new Object();
 
-        public ProxyService()
+        private ProxyService()
         {
             _httpClient = new HttpClient();
             _itemRepository = new ItemRepository();
@@ -63,7 +66,6 @@ namespace todoclient.Services
                     if (instance == null)
                     { 
                         instance = new ProxyService();
-                        instance.StartProxy();
                     }
                 }
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
+using todoclient.Services;
 
 namespace todoclient
 {
@@ -12,6 +13,9 @@ namespace todoclient
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            ProxyService proxyService = ProxyService.GetInstance();
+            proxyService.StartProxy();
         }
     }
 }

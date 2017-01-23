@@ -37,7 +37,7 @@ namespace ToDoClient.Services
 
         private readonly IItemRepository _itemRepository;
 
-        private ProxyService _proxyService;
+       // private ProxyService _proxyService;
         /// <summary>
         /// Creates the service.
         /// </summary>
@@ -62,8 +62,7 @@ namespace ToDoClient.Services
             {
                 if(!ProxyService.listOfUsersId.Contains(userId))
                     ProxyService.listOfUsersId.Enqueue(userId);
-
-                _proxyService = ProxyService.GetInstance();
+                
                 return itemResult;
             }
 
