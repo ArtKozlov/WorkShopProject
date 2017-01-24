@@ -3,65 +3,87 @@ using System.Collections.Generic;
 using System.Linq;
 using DAL.Entities;
 using DAL.Interfaces;
-using DAL.Context;
-using System.Data.Entity;
+using DAL.NHibernate;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace DAL.Repositories
 {
     public class ItemRepository : IItemRepository
     {
-        private readonly ToDoListContext _context;
-
-        public ItemRepository()
-        {
-            _context = new ToDoListContext();
-        }
+        
         public void Create(Item item)
         {
             if (ReferenceEquals(item, null))
                 throw new ArgumentNullException();
 
-            _context.Items.Add(item);
-            _context.SaveChanges();
-            _context.Dispose();
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Save(item);
+                    transaction.Commit();
+                }
+            }
 
         }
 
         public void Delete(int key)
         {
-            var item = _context.Items.FirstOrDefault(i => i.ToDoId == key);
-            if (!ReferenceEquals(item, null))
+
+            using (ISession session = NHibernateHelper.OpenSession())
             {
-                _context.Items.Remove(item);
-                _context.SaveChanges();
-                _context.Dispose();
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    var item = session.Query<Item>().FirstOrDefault(i => i.ToDoId == key);
+                    if (!ReferenceEquals(item, null))
+                    {
+                        session.Delete(item);
+                        transaction.Commit();
+                    }
+                }
             }
+
         }
 
 
         public Item GetById(int key)
         {
-            var result = _context.Items.FirstOrDefault(i => i.UserId == key);
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                    var item = session.Query<Item>().FirstOrDefault(i => i.ToDoId == key);
 
-            return result;
+                    if (!ReferenceEquals(item, null))
+                    {
+                        return item;
+                    }
+            }
+            return null;
         }
 
         public IEnumerable<Item> GetItems(int userId)
         {
-            var result = _context.Items.Where(i => i.UserId == userId);
-
-            return result;
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                var result =  session.Query<Item>().Where(i => i.UserId == userId).ToList<Item>();
+                return result;
+            }
         }
 
         public void Update(Item item)
         {
-            var entity = _context.Items.FirstOrDefault(i => i.ToDoId == item.ToDoId);
-            entity.Name = item.Name;
-            entity.IsCompleted = item.IsCompleted;           
-            entity.UserId = item.UserId;
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
-            _context.Dispose();
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    var entity = session.Query<Item>().FirstOrDefault(i => i.ToDoId == item.ToDoId);
+                    entity.Name = item.Name;
+                    entity.IsCompleted = item.IsCompleted;
+                    entity.UserId = item.UserId;
+                    session.Save(entity);
+                    transaction.Commit();
+                }
+            }
         }
 
     }

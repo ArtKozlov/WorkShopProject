@@ -9,8 +9,8 @@ namespace todoclient
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            ProxyService proxyService = ProxyService.GetInstance();
-            proxyService.StartProxy();
+           // ProxyService proxyService = ProxyService.GetInstance();
+           // proxyService.StartProxy();
         }
     }
 }
