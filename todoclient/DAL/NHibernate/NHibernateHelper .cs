@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+//using DAL.Entities.Mapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;

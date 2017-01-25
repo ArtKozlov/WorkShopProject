@@ -21,8 +21,17 @@ namespace DAL.Repositories
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Save(item);
-                    transaction.Commit();
+                    try
+                    {
+
+                        session.Save(item);
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadKey();
+                    }
                 }
             }
 

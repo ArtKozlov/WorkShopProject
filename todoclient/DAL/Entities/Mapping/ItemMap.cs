@@ -1,5 +1,4 @@
-﻿using System;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 
 namespace DAL.Entities.Mapping
 {
@@ -7,11 +6,12 @@ namespace DAL.Entities.Mapping
     {
         public ItemMap()
         {
-            Id(x => x.Id);
-            Map(x => x.Name);
-            Map(x => x.ToDoId);
-            Map(x => x.IsCompleted);
-            Map(x => x.UserId);
+            Table("Item");
+            Id(x => x.Id).Column("Id").Not.Nullable().GeneratedBy.Increment(); 
+            Map(x => x.Name).Column("Name").Nullable();
+            Map(x => x.ToDoId).Column("ToDoId").Nullable();
+            Map(x => x.IsCompleted).Column("IsCompleted").Nullable();
+            Map(x => x.UserId).Column("UserId").Nullable();
         }
     }
 }
