@@ -20,18 +20,9 @@ namespace DAL.Repositories
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
-                {
-                    try
-                    {
-
-                        session.Save(item);
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        Console.ReadKey();
-                    }
+                {                   
+                    session.Save(item);
+                    transaction.Commit();
                 }
             }
 

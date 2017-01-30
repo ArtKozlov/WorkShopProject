@@ -19,9 +19,8 @@ namespace todoclient
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            IUnityContainer container = UnityConfig.BuildUnityContainer();
-            config.DependencyResolver = new UnityResolver(container);
+            
+            config.DependencyResolver = new UnityResolver(UnityConfig.BuildUnityContainer());
 
         }
     }
