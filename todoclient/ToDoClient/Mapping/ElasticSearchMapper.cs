@@ -1,5 +1,4 @@
-﻿using DAL.Entities;
-using Newtonsoft.Json.Linq;
+﻿using ElasticSearch.Indices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,10 @@ using ToDoClient.Models;
 
 namespace todoclient.Mapping
 {
-    public static class Mapper
+    public static class ElasticSearchMapper
     {
 
-        public static Item ToItem(this ToDoItemViewModel toDoItemViewModel)
+        public static Item ToItemIdx(this ToDoItemViewModel toDoItemViewModel)
         {
             if (ReferenceEquals(toDoItemViewModel, null))
                 return null;
@@ -40,6 +39,5 @@ namespace todoclient.Mapping
             };
 
         }
-
     }
 }

@@ -12,6 +12,9 @@ using System.Linq;
 using DAL.Entities;
 using todoclient.Interfaces;
 using todoclient.Services;
+using ElasticSearch.Interfaces;
+using ElasticSearch.Queries;
+using ElasticSearch.Mapping;
 
 namespace ToDoClient.Services
 {
@@ -35,6 +38,9 @@ namespace ToDoClient.Services
 
         private readonly IItemRepository _itemRepository;
 
+        private IMapper mapper = new ElasticMapper();
+        private ItemQueries itemQueries;
+
        // private ProxyService _proxyService;
         /// <summary>
         /// Creates the service.
@@ -44,6 +50,7 @@ namespace ToDoClient.Services
             _httpClient = new HttpClient();
             _itemRepository = itemRepository;
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            itemQueries = new ItemQueries(mapper);
 
         }
 
@@ -64,20 +71,22 @@ namespace ToDoClient.Services
                 return itemResult;
             }
 
-            string dataAsString =
-                _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
+            //string dataAsString =
+            //    _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
 
-            IList<ToDoItemViewModel> userViewItems =
-                JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+            //IList<ToDoItemViewModel> userViewItems =
+            //    JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
 
-            List<Item> items = userViewItems.Select(i => i.ToItem()).ToList();
+            //List<Item> items = userViewItems.Select(i => i.ToItem()).ToList();
 
-            foreach (Item elem in items)
-            {
-                _itemRepository.Create(elem);
-            }
+            //foreach (Item elem in items)
+            //{
+            //    _itemRepository.Create(elem);
+            //}
 
-            return userViewItems;
+            //return userViewItems;
+
+            return itemResult;
 
         }
 
@@ -87,8 +96,8 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to create.</param>
         public void CreateItem(ToDoItemViewModel item)
         {
-
-            _itemRepository.Create(item.ToItem());
+            itemQueries.Create(item.ToItemIdx());
+            //_itemRepository.Create(item.ToItem());
 
         }
 

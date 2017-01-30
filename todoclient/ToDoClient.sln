@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoclient", "todoclient\to
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{D09CF800-7DB0-4459-93BD-EE0B86B025E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch", "ElasticSearch\ElasticSearch.csproj", "{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESL", "ElasticSearch\ESL.csproj", "{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
