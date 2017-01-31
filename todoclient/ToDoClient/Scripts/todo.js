@@ -27,6 +27,10 @@
         return $.getJSON("/api/todos");
     };
 
+    var loadSearchedTasks = function (searchedName) {
+        return $.getJSON("/api/todos?name="+ searchedName);
+    };
+
     // starts creating a task on the server.
     // @isCompleted: indicates if new task should be completed.
     // @name: name of new task.
@@ -71,6 +75,7 @@
     // returns public interface of task manager.
     return {
         loadTasks: loadTasks,
+        loadSearchedTasks: loadSearchedTasks,
         displayTasks: displayTasks,
         createTask: createTask,
         deleteTask: deleteTask,
@@ -84,14 +89,35 @@ $(function () {
     $("#newCreate").click(function () {
         var isCompleted = $('#newCompleted')[0].checked;
         var name = $('#newName')[0].value;
+        if (name === "")
+            alert("Task name is empty. Please enter task name.");
+        else {
 
-        tasksManager.createTask(isCompleted, name)
-            .then(tasksManager.loadTasks)
-            .done(function (tasks) {
-                tasksManager.displayTasks("#tasks > tbody", tasks);
-            });
+            tasksManager.createTask(isCompleted, name)
+                .then(tasksManager.loadTasks)
+                .done(function (tasks) {
+                    tasksManager.displayTasks("#tasks > tbody", tasks);
+                });
+        }
     });
 
+    $("#taskSearchButton").click(function () {
+        var searchedName = $("#searchedTask").val();
+        if (searchedName === "")
+        {
+            tasksManager.loadTasks()
+                .done(function (tasks) {
+                    tasksManager.displayTasks("#tasks > tbody", tasks);
+            });
+        }
+        else {
+
+            tasksManager.loadSearchedTasks(searchedName)
+                .done(function (tasks) {
+                    tasksManager.displayTasks("#tasks > tbody", tasks);
+                });
+        }
+    });
     // bind update task checkbox click handler
     $("#tasks > tbody").on('change', '.completed', function () {
         var tr = $(this).parent().parent();
@@ -99,11 +125,8 @@ $(function () {
         var isCompleted = tr.find('.completed')[0].checked;
         var name = tr.find('.name').text();
 
-        tasksManager.updateTask(taskId, isCompleted, name)
-            .then(tasksManager.loadTasks)
-            .done(function (tasks) {
-                tasksManager.displayTasks("#tasks > tbody", tasks);
-            });
+        tasksManager.updateTask(taskId, isCompleted, name);
+          
     });
 
     // bind delete button click for future rows

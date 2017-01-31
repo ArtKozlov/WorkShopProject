@@ -15,6 +15,7 @@ using todoclient.Services;
 using ElasticSearch.Interfaces;
 using ElasticSearch.Queries;
 using ElasticSearch.Indices;
+using System.Threading;
 
 namespace ToDoClient.Services
 {
@@ -64,28 +65,36 @@ namespace ToDoClient.Services
 
             if (itemResult.Count != 0)
             {
-                if(!ProxyService.listOfUsersId.Contains(userId))
+                if (!ProxyService.listOfUsersId.Contains(userId))
                     ProxyService.listOfUsersId.Enqueue(userId);
-                
+
                 return itemResult;
             }
 
-            //string dataAsString =
-            //    _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
+            string dataAsString =
+                _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
 
-            //IList<ToDoItemViewModel> userViewItems =
-            //    JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
+            IList<ToDoItemViewModel> userViewItems =
+                JsonConvert.DeserializeObject<IList<ToDoItemViewModel>>(dataAsString);
 
-            //List<Item> items = userViewItems.Select(i => i.ToItem()).ToList();
+            List<Item> items = userViewItems.Select(i => i.ToItem()).ToList();
 
-            //foreach (Item elem in items)
-            //{
-            //    _itemRepository.Create(elem);
-            //}
+            foreach (Item elem in items)
+            {
+                _itemRepository.Create(elem);
+            }
 
-            //return userViewItems;
+            return userViewItems;
 
-            return itemResult;
+            // so fast. 
+            // var itemResult = _itemQueries.GetItems(userId).Select(i => i.ToViewModel()).ToList();
+
+        }
+
+        public IList<ToDoItemViewModel> GetByName(string name)
+        {
+            List<ToDoItemViewModel> result = _itemQueries.GetByName(name).Select(i => i.ToViewModel()).ToList();
+            return result;
 
         }
 
@@ -95,11 +104,14 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to create.</param>
         public void CreateItem(ToDoItemViewModel item)
         {
+            if(!ReferenceEquals(item.Name, null))
+            { 
             _itemRepository.Create(item.ToItem());
-            //ItemIdx itemIdx = item.ToItemIdx();
-            //itemIdx.Id = _itemRepository.GetItems(item.UserId).Last().Id;
+            ItemIdx itemIdx = item.ToItemIdx();
+            item.Id = _itemRepository.GetItems(item.UserId).Last().Id;
             _itemQueries.Create(item.ToItemIdx());
-            
+            }
+
         }
 
         /// <summary>

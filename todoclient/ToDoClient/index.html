@@ -27,19 +27,36 @@
                 <button type="button" id="newCreate" class="btn btn-success">Create</button>
             </div>
             <div class="col-md-6">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group" id="adv-search">
+                                <input type="text" id="searchedTask" class="form-control" placeholder="Search..." />
+                                <div class="input-group-btn">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" id ="taskSearchButton"class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <table class="table table-striped" id="tasks">
                     <thead>
                         <tr>
                             <th>Completed</th>
                             <th>Task</th>
-                            <th>Actions/</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
+            </div>
 
             </div>
         </div>
-    </div>
 </body>
 </html>

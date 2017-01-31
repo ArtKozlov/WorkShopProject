@@ -10,8 +10,6 @@ namespace ElasticSearch.Queries
     {
         private readonly Uri local;
         private readonly ConnectionSettings settings;
-      //  private IndexNameResolver resolver;
-       // private readonly string index;
         private readonly ElasticClient client;
 
         public ItemQueries()
@@ -20,45 +18,53 @@ namespace ElasticSearch.Queries
             local = new Uri("http://localhost:9200");
             settings = new ConnectionSettings(local)
             .DefaultIndex("todolist").DefaultTypeNameInferrer(t => "item");
-            //resolver = new IndexNameResolver(settings);
-            //index = resolver.Resolve<Item>();
             client = new ElasticClient(settings);
 
         }
-
         
 
-        public void Create(ItemIdx e)
+        public void Create(ItemIdx item)
         {
-            //client.Index(index);
-            client.Create(e);
-            //client.Delete(new DeleteRequest<Item>(e.Id.ToString()));
+            client.Create(item);
 
         }
 
         public void Delete(int key)
         {
-            //client.Index(index);
             client.Delete(new DeleteRequest<ItemIdx>(key.ToString()));
         }
 
-        public ItemIdx GetById(int key)
+        public void Update(ItemIdx item)
         {
-            throw new NotImplementedException();
+            client.Update(DocumentPath<ItemIdx>
+                .Id(item.Id),
+                u => u.Doc(item).DocAsUpsert(true));
         }
 
         public IEnumerable<ItemIdx> GetItems(int userId)
         {
-            throw new NotImplementedException();
+            var result = client.Search<ItemIdx>(s => s
+                .Query(q => q
+                    .Bool(b => b
+                        .Should(
+                            bs => bs.Term(p => p.UserId, userId)
+            )))).Documents;
+
+            return result;
         }
 
-        public void Update(ItemIdx e)
+        public IEnumerable<ItemIdx> GetByName(string name)
         {
-            client.Update(DocumentPath<ItemIdx>
-                .Id(e.Id),
-                u => u.Doc(e).DocAsUpsert(true)); 
+            var result = client.Search<ItemIdx>(s => s
+                .Query(q => q
+                    .Bool(b => b
+                        .Should(
+                             bs => bs.Term(p => p.Name, name.ToLower())
+            )))).Documents;
+
+            return result;
         }
 
+     }
 
-    }
 }
