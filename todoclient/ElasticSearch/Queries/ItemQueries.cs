@@ -8,42 +8,55 @@ namespace ElasticSearch.Queries
 {
     public class ItemQueries : IRestQueries
     {
-        public ItemQueries(IMapper mapper)
+        private readonly Uri local;
+        private readonly ConnectionSettings settings;
+      //  private IndexNameResolver resolver;
+       // private readonly string index;
+        private readonly ElasticClient client;
+
+        public ItemQueries()
         {
-          //  mapper.Mapping();
+
+            local = new Uri("http://localhost:9200");
+            settings = new ConnectionSettings(local)
+            .DefaultIndex("todolist").DefaultTypeNameInferrer(t => "item");
+            //resolver = new IndexNameResolver(settings);
+            //index = resolver.Resolve<Item>();
+            client = new ElasticClient(settings);
+
         }
 
-        public void Create(Item e)
-        {
-            var local = new Uri("http://localhost:9200");
+        
 
-            var settings = new ConnectionSettings(local)
-                .DefaultIndex("toDoList");
-            var resolver = new IndexNameResolver(settings);
-            var index = resolver.Resolve<Item>();
-            var client = new ElasticClient(settings);
-            client.Index(index);
+        public void Create(ItemIdx e)
+        {
+            //client.Index(index);
             client.Create(e);
+            //client.Delete(new DeleteRequest<Item>(e.Id.ToString()));
+
         }
 
         public void Delete(int key)
         {
-            throw new NotImplementedException();
+            //client.Index(index);
+            client.Delete(new DeleteRequest<ItemIdx>(key.ToString()));
         }
 
-        public Item GetById(int key)
+        public ItemIdx GetById(int key)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Item> GetItems(int userId)
+        public IEnumerable<ItemIdx> GetItems(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Item e)
+        public void Update(ItemIdx e)
         {
-            throw new NotImplementedException();
+            client.Update(DocumentPath<ItemIdx>
+                .Id(e.Id),
+                u => u.Doc(e).DocAsUpsert(true)); 
         }
 
 

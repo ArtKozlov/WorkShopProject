@@ -10,14 +10,14 @@ namespace todoclient.Mapping
     public static class ElasticSearchMapper
     {
 
-        public static Item ToItemIdx(this ToDoItemViewModel toDoItemViewModel)
+        public static ItemIdx ToItemIdx(this ToDoItemViewModel toDoItemViewModel)
         {
             if (ReferenceEquals(toDoItemViewModel, null))
                 return null;
 
-            return new Item()
+            return new ItemIdx()
             {
-                ToDoId = toDoItemViewModel.ToDoId,
+                Id = toDoItemViewModel.Id,
                 Name = toDoItemViewModel.Name,
                 IsCompleted = toDoItemViewModel.IsCompleted,
                 UserId = toDoItemViewModel.UserId
@@ -25,14 +25,14 @@ namespace todoclient.Mapping
 
         }
 
-        public static ToDoItemViewModel ToViewModel(this Item toDoItem)
+        public static ToDoItemViewModel ToViewModel(this ItemIdx toDoItem)
         {
             if (ReferenceEquals(toDoItem, null))
                 return null;
 
             return new ToDoItemViewModel()
             {
-                ToDoId = toDoItem.ToDoId,
+                Id = toDoItem.Id,
                 Name = toDoItem.Name,
                 IsCompleted = toDoItem.IsCompleted,
                 UserId = toDoItem.UserId

@@ -10,7 +10,6 @@ namespace ElasticSearch.Indices
     {
        
         public int Id { get; set; }
-        public int ToDoId { get; set; }
         public string Name { get; set; }
         public bool IsCompleted { get; set; }
         public int UserId { get; set; }

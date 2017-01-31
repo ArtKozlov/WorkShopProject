@@ -18,7 +18,7 @@ namespace todoclient.Mapping
 
             return new Item()
             {
-                ToDoId = toDoItemViewModel.ToDoId,
+                Id = toDoItemViewModel.Id,
                 Name = toDoItemViewModel.Name,
                 IsCompleted = toDoItemViewModel.IsCompleted,
                 UserId = toDoItemViewModel.UserId
@@ -33,7 +33,7 @@ namespace todoclient.Mapping
 
             return new ToDoItemViewModel()
             {
-                ToDoId = toDoItem.ToDoId,
+                Id = toDoItem.Id,
                 Name = toDoItem.Name,
                 IsCompleted = toDoItem.IsCompleted,
                 UserId = toDoItem.UserId

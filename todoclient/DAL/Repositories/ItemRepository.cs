@@ -35,7 +35,7 @@ namespace DAL.Repositories
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var item = session.Query<Item>().FirstOrDefault(i => i.ToDoId == key);
+                    var item = session.Query<Item>().FirstOrDefault(i => i.Id == key);
                     if (!ReferenceEquals(item, null))
                     {
                         session.Delete(item);
@@ -51,7 +51,7 @@ namespace DAL.Repositories
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                    var item = session.Query<Item>().FirstOrDefault(i => i.ToDoId == key);
+                    var item = session.Query<Item>().FirstOrDefault(i => i.Id == key);
 
                     if (!ReferenceEquals(item, null))
                     {
@@ -76,7 +76,7 @@ namespace DAL.Repositories
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var entity = session.Query<Item>().FirstOrDefault(i => i.ToDoId == item.ToDoId);
+                    var entity = session.Query<Item>().FirstOrDefault(i => i.Id == item.Id);
                     entity.Name = item.Name;
                     entity.IsCompleted = item.IsCompleted;
                     entity.UserId = item.UserId;

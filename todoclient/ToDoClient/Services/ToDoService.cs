@@ -14,7 +14,7 @@ using todoclient.Interfaces;
 using todoclient.Services;
 using ElasticSearch.Interfaces;
 using ElasticSearch.Queries;
-using ElasticSearch.Mapping;
+using ElasticSearch.Indices;
 
 namespace ToDoClient.Services
 {
@@ -37,20 +37,19 @@ namespace ToDoClient.Services
         private readonly HttpClient _httpClient;
 
         private readonly IItemRepository _itemRepository;
-
-        private IMapper mapper = new ElasticMapper();
-        private ItemQueries itemQueries;
+        
+        private IRestQueries _itemQueries;
 
        // private ProxyService _proxyService;
         /// <summary>
         /// Creates the service.
         /// </summary>
-        public ToDoService(IItemRepository itemRepository)
+        public ToDoService(IItemRepository itemRepository, IRestQueries itemQueries)
         {
             _httpClient = new HttpClient();
             _itemRepository = itemRepository;
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            itemQueries = new ItemQueries(mapper);
+            _itemQueries = itemQueries;
 
         }
 
@@ -96,9 +95,11 @@ namespace ToDoClient.Services
         /// <param name="item">The todo to create.</param>
         public void CreateItem(ToDoItemViewModel item)
         {
-            itemQueries.Create(item.ToItemIdx());
-            //_itemRepository.Create(item.ToItem());
-
+            _itemRepository.Create(item.ToItem());
+            //ItemIdx itemIdx = item.ToItemIdx();
+            //itemIdx.Id = _itemRepository.GetItems(item.UserId).Last().Id;
+            _itemQueries.Create(item.ToItemIdx());
+            
         }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace ToDoClient.Services
         public void UpdateItem(ToDoItemViewModel item)
         {
             _itemRepository.Update(item.ToItem());
-
+            _itemQueries.Update(item.ToItemIdx());
         }
 
         /// <summary>
@@ -118,6 +119,7 @@ namespace ToDoClient.Services
         public void DeleteItem(int id)
         {
             _itemRepository.Delete(id);
+            _itemQueries.Delete(id);
 
         }
     }

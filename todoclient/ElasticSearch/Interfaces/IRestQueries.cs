@@ -9,10 +9,10 @@ namespace ElasticSearch.Interfaces
 {
     public interface IRestQueries
     {
-        void Create(Item e);
-        void Update(Item e);
-        Item GetById(int key);
+        void Create(ItemIdx e);
+        void Update(ItemIdx e);
+        ItemIdx GetById(int key);
         void Delete(int key);
-        IEnumerable<Item> GetItems(int userId);
+        IEnumerable<ItemIdx> GetItems(int userId);
     }
 }

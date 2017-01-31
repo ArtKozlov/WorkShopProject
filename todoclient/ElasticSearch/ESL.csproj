@@ -53,10 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Indices\Item.cs" />
-    <Compile Include="Interfaces\IMapper.cs" />
+    <Compile Include="Indices\ItemIdx.cs" />
     <Compile Include="Interfaces\IRestQueries.cs" />
-    <Compile Include="Mapping\ElasticMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\ItemQueries.cs" />
   </ItemGroup>
