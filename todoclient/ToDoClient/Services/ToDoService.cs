@@ -6,16 +6,13 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using ToDoClient.Models;
 using DAL.Interfaces;
-using DAL.Repositories;
 using todoclient.Mapping;
 using System.Linq;
 using DAL.Entities;
 using todoclient.Interfaces;
 using todoclient.Services;
 using ElasticSearch.Interfaces;
-using ElasticSearch.Queries;
 using ElasticSearch.Indices;
-using System.Threading;
 
 namespace ToDoClient.Services
 {
@@ -91,9 +88,9 @@ namespace ToDoClient.Services
 
         }
 
-        public IList<ToDoItemViewModel> GetByName(string name)
+        public IList<ToDoItemViewModel> GetByName(string name, int userId)
         {
-            List<ToDoItemViewModel> result = _itemQueries.GetByName(name).Select(i => i.ToViewModel()).ToList();
+            List<ToDoItemViewModel> result = _itemQueries.GetByName(name, userId).Select(i => i.ToViewModel()).ToList();
             return result;
 
         }
@@ -106,10 +103,10 @@ namespace ToDoClient.Services
         {
             if(!ReferenceEquals(item.Name, null))
             { 
-            _itemRepository.Create(item.ToItem());
-            ItemIdx itemIdx = item.ToItemIdx();
-            item.Id = _itemRepository.GetItems(item.UserId).Last().Id;
-            _itemQueries.Create(item.ToItemIdx());
+                _itemRepository.Create(item.ToItem());
+                ItemIdx itemIdx = item.ToItemIdx();
+                item.Id = _itemRepository.GetItems(item.UserId).Last()?.Id ?? 1;
+                _itemQueries.Create(item.ToItemIdx());
             }
 
         }

@@ -8,7 +8,7 @@ namespace ElasticSearch.Interfaces
     {
         void Create(ItemIdx item);
         void Update(ItemIdx item);
-        IEnumerable<ItemIdx> GetByName(string name);
+        IEnumerable<ItemIdx> GetByName(string name, int userId);
         void Delete(int key);
         IEnumerable<ItemIdx> GetItems(int userId);
     }

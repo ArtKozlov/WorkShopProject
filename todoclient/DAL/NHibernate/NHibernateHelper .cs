@@ -1,5 +1,4 @@
 ﻿using DAL.Entities;
-//using DAL.Entities.Mapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -9,6 +8,10 @@ namespace DAL.NHibernate
 {
     public class NHibernateHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static ISession OpenSession()
         {
             ISessionFactory sessionFactory = Fluently.Configure()

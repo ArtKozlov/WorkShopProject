@@ -11,7 +11,10 @@ namespace DAL.Repositories
 {
     public class ItemRepository : IItemRepository
     {
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
         public void Create(Item item)
         {
             if (ReferenceEquals(item, null))
@@ -28,6 +31,10 @@ namespace DAL.Repositories
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
         public void Delete(int key)
         {
 
@@ -46,7 +53,11 @@ namespace DAL.Repositories
 
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Item GetById(int key)
         {
             using (ISession session = NHibernateHelper.OpenSession())
@@ -61,6 +72,11 @@ namespace DAL.Repositories
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public IEnumerable<Item> GetItems(int userId)
         {
             using (ISession session = NHibernateHelper.OpenSession())
@@ -70,6 +86,10 @@ namespace DAL.Repositories
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
         public void Update(Item item)
         {
             using (ISession session = NHibernateHelper.OpenSession())
