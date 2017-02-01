@@ -55,13 +55,10 @@ namespace ElasticSearch.Queries
 
         public IEnumerable<ItemIdx> GetByName(string name, int userId)
         {
-            
             var result = client.Search<ItemIdx>(s => s
                 .Query(q => q.Bool(b => b
-                    .Should(bs => bs
-                        .Term(p => p.UserId, userId))) && 
-                            q.Term(p => p.Name, name.ToLower()))).Documents;
-            
+                    .Must(bs => bs.Term(p => p.UserId, userId),
+                          bs => bs.Term(p => p.Name, name.ToLower()))))).Documents;            
             return result;
         }
 
