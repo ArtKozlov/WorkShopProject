@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http.Dependencies;
 using Microsoft.Practices.Unity;
 
-namespace todoclient.DependencyResolver
+namespace ToDoClient.DependencyResolver
 {
     public class UnityResolver : IDependencyResolver
     {

@@ -146,22 +146,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ToDosController.cs" />
     <Compile Include="DependencyResolver\UnityResolver.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IToDoService.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="Mapping\ElasticSearchMapper.cs" />
     <Compile Include="Mapping\Mapper.cs" />
-    <Compile Include="Models\ToDoViewModel.cs" />
+    <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ProxyService.cs" />
-    <Compile Include="Services\ToDoService.cs" />
-    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -178,13 +171,13 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{d09cf800-7db0-4459-93bd-ee0b86b025e4}</Project>
-      <Name>DAL</Name>
+    <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj">
+      <Project>{5cee2443-9251-400d-9d2b-728110c8cd19}</Project>
+      <Name>DependencyResolver</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ElasticSearch\ESL.csproj">
-      <Project>{ea0bcee7-ac85-47d0-be4f-25f7e970a8de}</Project>
-      <Name>ESL</Name>
+    <ProjectReference Include="..\ToDoLogic\ToDoLogic.csproj">
+      <Project>{0756bf9b-112e-4c94-a837-667e40081536}</Project>
+      <Name>ToDoLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

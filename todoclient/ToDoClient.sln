@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoclient", "todoclient\todoclient.csproj", "{DCF98A24-6871-43D7-BAB1-0D00B7A59A01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoClient", "todoclient\ToDoClient.csproj", "{DCF98A24-6871-43D7-BAB1-0D00B7A59A01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{D09CF800-7DB0-4459-93BD-EE0B86B025E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESL", "ElasticSearch\ESL.csproj", "{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoLogic", "ToDoLogic\ToDoLogic.csproj", "{0756BF9B-112E-4C94-A837-667E40081536}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyResolver", "DependencyResolver\DependencyResolver.csproj", "{5CEE2443-9251-400D-9D2B-728110C8CD19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{D09CF800-7DB0-4459-93BD-EE0B86B025E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D09CF800-7DB0-4459-93BD-EE0B86B025E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D09CF800-7DB0-4459-93BD-EE0B86B025E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA0BCEE7-AC85-47D0-BE4F-25F7E970A8DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0756BF9B-112E-4C94-A837-667E40081536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0756BF9B-112E-4C94-A837-667E40081536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0756BF9B-112E-4C94-A837-667E40081536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0756BF9B-112E-4C94-A837-667E40081536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CEE2443-9251-400D-9D2B-728110C8CD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CEE2443-9251-400D-9D2B-728110C8CD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CEE2443-9251-400D-9D2B-728110C8CD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CEE2443-9251-400D-9D2B-728110C8CD19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

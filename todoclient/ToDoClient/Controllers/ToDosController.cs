@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Web;
+using System.Linq;
 using System.Web.Http;
-using todoclient.Interfaces;
+using ToDoClient.Mapping;
 using ToDoClient.Models;
+using ToDoLogic.Interfaces;
 
 namespace ToDoClient.Controllers
 {
@@ -12,40 +13,39 @@ namespace ToDoClient.Controllers
     public class ToDosController : ApiController
     {
         private readonly IToDoService _toDoService;
-        private readonly IUserService _userService;
+       // private readonly IUserService _userService;
 
-        public ToDosController(IToDoService toDoService, IUserService userService)
+        public ToDosController(IToDoService toDoService)
         {
             _toDoService = toDoService;
-            _userService = userService;
         }
 
         /// <summary>
         /// Returns all todo-items for the current user.
         /// </summary>
         /// <returns>The list of todo-items.</returns>
-        public IList<ToDoItemViewModel> Get()
+        public IList<TaskViewModel> Get()
         {
-            var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetItems(userId);
+           // var userId = _userService.GetOrCreateUser();
+            return _toDoService.GetTasks().Select(t => t.ToViewModel()).ToList();
         }
         /// <summary>
         /// Returns all todo-items for the current user.
         /// </summary>
         /// <returns>The list of todo-items.</returns>
-        public IList<ToDoItemViewModel> Get(string name)
+        public IList<TaskViewModel> Get(string name)
         {
-            var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetByName(name, userId);
+           // var userId = _userService.GetOrCreateUser();
+            return _toDoService.GetTaskByName(name, 327).Select(t => t.ToViewModel()).ToList();
         }
         /// <summary>
         /// Updates the existing todo-item.
         /// </summary>
-        /// <param name="todo">The todo-item to update.</param>
-        public void Put(ToDoItemViewModel todo)
+        /// <param name="taskViewModel">The todo-item to update.</param>
+        public void Put(TaskViewModel taskViewModel)
         {
-            todo.UserId = _userService.GetOrCreateUser();
-            _toDoService.UpdateItem(todo);
+           // todo.UserId = _userService.GetOrCreateUser();
+            _toDoService.UpdateTask(taskViewModel.ToTaskDto());
         }
 
         /// <summary>
@@ -54,17 +54,17 @@ namespace ToDoClient.Controllers
         /// <param name="id">The todo item identifier.</param>
         public void Delete(int id)
         {
-            _toDoService.DeleteItem(id);
+            _toDoService.DeleteTask(id);
         }
 
         /// <summary>
         /// Creates a new todo-item.
         /// </summary>
-        /// <param name="todo">The todo-item to create.</param>
-        public void Post(ToDoItemViewModel todo)
+        /// <param name="taskViewModel">The todo-item to create.</param>
+        public void Post(TaskViewModel taskViewModel)
         {
-            todo.UserId = _userService.GetOrCreateUser();
-            _toDoService.CreateItem(todo);
+            //todo.UserId = _userService.GetOrCreateUser();
+            _toDoService.CreateTask(taskViewModel.ToTaskDto());
         }
     }
 }

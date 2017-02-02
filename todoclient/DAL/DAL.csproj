@@ -81,12 +81,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Item.cs" />
-    <Compile Include="Entities\Mapping\ItemMap.cs" />
-    <Compile Include="Interfaces\IItemRepository.cs" />
+    <Compile Include="ElasticSearch\ElasticSearchConfig.cs" />
+    <Compile Include="ElasticSearch\ElasticSearchConfigSection.cs" />
+    <Compile Include="Entities\ElasticSearch\ElasticSearchTask.cs" />
+    <Compile Include="Entities\ElasticSearch\ElasticSearchUser.cs" />
+    <Compile Include="Entities\NHibernate\Task.cs" />
+    <Compile Include="Entities\NHibernate\User.cs" />
+    <Compile Include="Interfaces\ElasticSearch\ITaskElasticSearchRepository.cs" />
+    <Compile Include="Mapping\NHibernate\TaskMap.cs" />
+    <Compile Include="Interfaces\NHibernate\ITaskRepository.cs" />
+    <Compile Include="Mapping\NHibernate\UserMap.cs" />
     <Compile Include="NHibernate\NHibernateHelper .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ItemRepository.cs" />
+    <Compile Include="Repositories\ElasticSearch\TaskElasticSearchRepository.cs" />
+    <Compile Include="Repositories\NHibernate\TaskRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -104,6 +112,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

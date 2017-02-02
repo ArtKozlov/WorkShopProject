@@ -1,37 +1,37 @@
-﻿using DAL.Entities;
-using ToDoClient.Models;
+﻿using ToDoClient.Models;
+using ToDoLogic.DTO;
 
-namespace todoclient.Mapping
+namespace ToDoClient.Mapping
 {
     public static class Mapper
     {
 
-        public static Item ToItem(this ToDoItemViewModel toDoItemViewModel)
+        public static TaskDto ToTaskDto(this TaskViewModel taskViewModel)
         {
-            if (ReferenceEquals(toDoItemViewModel, null))
+            if (ReferenceEquals(taskViewModel, null))
                 return null;
 
-            return new Item()
+            return new TaskDto()
             {
-                Id = toDoItemViewModel.Id,
-                Name = toDoItemViewModel.Name,
-                IsCompleted = toDoItemViewModel.IsCompleted,
-                UserId = toDoItemViewModel.UserId
+                Id = taskViewModel.Id,
+                Name = taskViewModel.Name,
+                IsCompleted = taskViewModel.IsCompleted,
+                UserId = taskViewModel.UserId
             };
 
         }
 
-        public static ToDoItemViewModel ToViewModel(this Item toDoItem)
+        public static TaskViewModel ToViewModel(this TaskDto taskDto)
         {
-            if (ReferenceEquals(toDoItem, null))
+            if (ReferenceEquals(taskDto, null))
                 return null;
 
-            return new ToDoItemViewModel()
+            return new TaskViewModel()
             {
-                Id = toDoItem.Id,
-                Name = toDoItem.Name,
-                IsCompleted = toDoItem.IsCompleted,
-                UserId = toDoItem.UserId
+                Id = taskDto.Id,
+                Name = taskDto.Name,
+                IsCompleted = taskDto.IsCompleted,
+                UserId = taskDto.UserId
             };
 
         }

@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using DAL.Entities.NHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -8,18 +8,13 @@ namespace DAL.NHibernate
 {
     public class NHibernateHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public static ISession OpenSession()
         {
             ISessionFactory sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012
-                .ConnectionString(@"Data Source=(LocalDB)\v11.0;
-                    AttachDbFilename=|DataDirectory|\WorkShopDB.mdf;Integrated Security=True")
+                .ConnectionString(cs => cs.FromConnectionStringWithKey("WorkShopConnectionString"))
             .ShowSql())             
-            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Item>())
+            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Task>())
             .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
             .BuildSessionFactory();
             return sessionFactory.OpenSession();

@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
-using todoclient.Services;
 
-namespace todoclient
+namespace ToDoClient
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
@@ -9,8 +8,6 @@ namespace todoclient
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-           // ProxyService proxyService = ProxyService.GetInstance();
-           // proxyService.StartProxy();
         }
     }
 }

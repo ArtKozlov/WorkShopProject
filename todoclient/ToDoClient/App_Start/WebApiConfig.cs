@@ -1,9 +1,8 @@
 ﻿using System.Web.Http;
-using Microsoft.Practices.Unity;
-using todoclient.App_Start;
-using todoclient.DependencyResolver;
+using DependencyResolver;
+using ToDoClient.DependencyResolver;
 
-namespace todoclient
+namespace ToDoClient
 {
     public static class WebApiConfig
     {
