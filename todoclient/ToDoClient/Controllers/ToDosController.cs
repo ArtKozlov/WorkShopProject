@@ -4,6 +4,8 @@ using System.Web.Http;
 using ToDoClient.Mapping;
 using ToDoClient.Models;
 using ToDoLogic.Interfaces;
+using AutoMapper;
+using ToDoLogic.DTO;
 
 namespace ToDoClient.Controllers
 {
@@ -27,7 +29,8 @@ namespace ToDoClient.Controllers
         public IList<TaskViewModel> Get()
         {
            // var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetTasks().Select(t => t.ToViewModel()).ToList();
+           MapConfig.CreateMapTaskDtoToTaskViewModel();
+            return _toDoService.GetTasks().Select(t => Mapper.Map<TaskViewModel>(t)).ToList();
         }
         /// <summary>
         /// Returns all todo-items for the current user.
@@ -35,8 +38,9 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<TaskViewModel> Get(string name)
         {
-           // var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetTaskByName(name, 327).Select(t => t.ToViewModel()).ToList();
+            // var userId = _userService.GetOrCreateUser();
+            MapConfig.CreateMapTaskDtoToTaskViewModel();
+            return _toDoService.GetTaskByName(name, 327).Select(t => Mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
         }
         /// <summary>
         /// Updates the existing todo-item.
@@ -45,7 +49,8 @@ namespace ToDoClient.Controllers
         public void Put(TaskViewModel taskViewModel)
         {
            // todo.UserId = _userService.GetOrCreateUser();
-            _toDoService.UpdateTask(taskViewModel.ToTaskDto());
+           MapConfig.CreateMapTaskViewModelToTaskDto();
+            _toDoService.UpdateTask(Mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
 
         /// <summary>
@@ -64,7 +69,8 @@ namespace ToDoClient.Controllers
         public void Post(TaskViewModel taskViewModel)
         {
             //todo.UserId = _userService.GetOrCreateUser();
-            _toDoService.CreateTask(taskViewModel.ToTaskDto());
+            MapConfig.CreateMapTaskViewModelToTaskDto();
+            _toDoService.CreateTask(Mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
     }
 }

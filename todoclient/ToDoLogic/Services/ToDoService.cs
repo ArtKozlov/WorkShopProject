@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using DAL.Entities.ElasticSearch;
+using DAL.Entities.NHibernate;
 using DAL.Interfaces.ElasticSearch;
 using DAL.Interfaces.NHibernate;
 using ToDoLogic.DTO;
@@ -31,7 +34,7 @@ namespace ToDoLogic.Services
         {
             _taskRepository = itemRepository;
             _taskElasticSearchRepository = itemQueries;
-
+            
         }
 
         /// <summary>
@@ -41,8 +44,8 @@ namespace ToDoLogic.Services
         /// <returns>The list of todos.</returns>
         public IList<TaskDto> GetTasks()
         {
-            var listOfTasks = _taskRepository.GetTasks().Select(i => i.ToTaskDto()).ToList();
-
+            MapConfig.CreateMapTaskToTaskDto();
+            var listOfTasks = _taskRepository.GetTasks().Select(i => Mapper.Map<TaskDto>(i)).ToList();
             return listOfTasks;
 
             // so fast. 
@@ -52,7 +55,9 @@ namespace ToDoLogic.Services
 
         public IList<TaskDto> GetTaskByName(string name, int userId)
         {
-            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name, userId).Select(i => i.ToTaskDto()).ToList();
+
+            MapConfig.CreateMapElasticSearchTaskToTaskDto();
+            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name, userId).Select(i => Mapper.Map<TaskDto>(i)).ToList();
             return result;
 
         }
@@ -66,9 +71,13 @@ namespace ToDoLogic.Services
             if(!ReferenceEquals(task.Name, null))
             { 
                 task.CreatedDate = DateTime.Now;
-                _taskRepository.Create(task.ToTask());
+                          
+                MapConfig.CreateMapTaskDtoToTask();
+                _taskRepository.Create(Mapper.Map<TaskDto, Task>(task));
+
+                MapConfig.CreateMapTaskDtoToElasticSearchTask();
                 task.Id = _taskRepository.GetTasks().Last()?.Id ?? 1;
-                _taskElasticSearchRepository.Create(task.ToElsticSearchTask());
+                _taskElasticSearchRepository.Create(Mapper.Map<ElasticSearchTask>(task));
             }
 
         }
@@ -79,8 +88,10 @@ namespace ToDoLogic.Services
         /// <param name="task">The todo to update.</param>
         public void UpdateTask(TaskDto task)
         {
-            _taskRepository.Update(task.ToTask());
-            _taskElasticSearchRepository.Update(task.ToElsticSearchTask());
+            MapConfig.CreateMapTaskDtoToTask();
+            _taskRepository.Update(Mapper.Map<TaskDto, Task>(task));
+            MapConfig.CreateMapTaskDtoToElasticSearchTask();
+            _taskElasticSearchRepository.Update(Mapper.Map<ElasticSearchTask>(task));
         }
 
         /// <summary>
