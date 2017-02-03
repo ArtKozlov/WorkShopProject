@@ -8,6 +8,6 @@ namespace ToDoLogic.DTO
         public string Name { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int UserId { get; set; }
+        public UserDto User { get; set; }
     }
 }

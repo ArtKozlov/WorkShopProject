@@ -19,7 +19,7 @@ namespace DependencyResolver
             container.RegisterType<IToDoService, ToDoService>();
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<ITaskElasticSearchRepository, TaskElasticSearchRepository>();
-            container.RegisterType<ElasticClient, TaskElasticClient>();
+            container.RegisterType<IUnitOfWorkElasticSearch, UnitOfWorkElasticSearch>();
 
             return container;
         }

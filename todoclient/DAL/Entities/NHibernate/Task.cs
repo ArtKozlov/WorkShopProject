@@ -9,7 +9,7 @@ namespace DAL.Entities.NHibernate
         public virtual string Name { get; set; }
         public virtual bool IsCompleted { get; set; }
         public virtual DateTime CreatedDate { get; set; }
-        public virtual int UserId { get; set; }
+        public virtual User User { get; set; }
 
     }
 }

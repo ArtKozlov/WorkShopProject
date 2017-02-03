@@ -40,7 +40,7 @@ namespace ToDoClient.Controllers
         public IList<TaskViewModel> Get(string name)
         {
             // var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetTaskByName(name, 327).Select(t => _mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
+            return _toDoService.GetTaskByName(name).Select(t => _mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
         }
         /// <summary>
         /// Updates the existing todo-item.

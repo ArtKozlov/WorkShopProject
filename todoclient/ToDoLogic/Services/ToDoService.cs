@@ -24,11 +24,11 @@ namespace ToDoLogic.Services
 
         private readonly IMapper _mapper;
 
-        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository itemQueries)
+        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository taskElasticSearchRepository)
         {
             _mapper = DtoMapperConfiguration.GetConfiguration().CreateMapper();
             _taskRepository = itemRepository;
-            _taskElasticSearchRepository = itemQueries;
+            _taskElasticSearchRepository = taskElasticSearchRepository;
 
         }
         /// <summary>
@@ -49,18 +49,16 @@ namespace ToDoLogic.Services
         /// <returns>The list of todos.</returns>
         public IList<TaskDto> GetTasks()
         {
-            var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
-            return listOfTasks;
-
             // so fast. 
-            // var itemResult = _itemQueries.GetItems(userId).Select(i => i.ToViewModel()).ToList();
-
+            var listOfTasks = _taskElasticSearchRepository.GetItems().Select(i => _mapper.Map<TaskDto>(i)).ToList();
+           // var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
+            return listOfTasks;
         }
 
-        public IList<TaskDto> GetTaskByName(string name, int userId)
+        public IList<TaskDto> GetTaskByName(string name)
         {
             
-            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name, userId).Select(i => _mapper.Map<TaskDto>(i)).ToList();
+            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name).Select(i => _mapper.Map<TaskDto>(i)).ToList();
             return result;
 
         }
@@ -74,7 +72,7 @@ namespace ToDoLogic.Services
             if(!ReferenceEquals(task.Name, null))
             { 
                 task.CreatedDate = DateTime.Now;
-                          
+                task.User = new UserDto {Id = 1, Name = "Dobkin", BirthDay = new DateTime(1993, 04, 03)};
                 _taskRepository.Create(_mapper.Map<TaskDto, Task>(task));
                 
                 task.Id = _taskRepository.GetTasks().Last()?.Id ?? 1;

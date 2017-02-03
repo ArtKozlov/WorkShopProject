@@ -8,8 +8,8 @@ namespace DAL.Interfaces.ElasticSearch
     {
         void Create(ElasticSearchTask item);
         void Update(ElasticSearchTask item);
-        IEnumerable<ElasticSearchTask> GetByName(string name, int userId);
+        IEnumerable<ElasticSearchTask> GetByName(string name);
         void Delete(int key);
-        IEnumerable<ElasticSearchTask> GetItems(int userId);
+        IEnumerable<ElasticSearchTask> GetItems();
     }
 }

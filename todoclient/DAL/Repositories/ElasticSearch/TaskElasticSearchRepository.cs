@@ -13,47 +13,49 @@ namespace DAL.Repositories.ElasticSearch
         /// <summary>
         /// The service URL.
         /// </summary>
-        private readonly ElasticClient _client;
+        private readonly IUnitOfWorkElasticSearch _uow;
 
-        public TaskElasticSearchRepository(ElasticClient client)
+        public TaskElasticSearchRepository(IUnitOfWorkElasticSearch uow)
         {
-            _client = client;
+            _uow = uow;
 
         }
 
         public void Create(ElasticSearchTask item)
         {
-            _client.Create(item);
+            _uow.Tasks.Create(item);
         }
 
         public void Delete(int key)
         {
-            _client.Delete(new DeleteRequest<ElasticSearchTask>(key.ToString()));
+            _uow.Tasks.Delete(new DeleteRequest<ElasticSearchTask>(key.ToString()));
         }
 
         public void Update(ElasticSearchTask item)
         {
-            _client.Update(DocumentPath<ElasticSearchTask>
+            _uow.Tasks.Update(DocumentPath<ElasticSearchTask>
                 .Id(item.Id),
                 u => u.Doc(item).DocAsUpsert());
         }
 
-        public IEnumerable<ElasticSearchTask> GetItems(int userId)
+        public IEnumerable<ElasticSearchTask> GetItems()
         {
-            var result = _client.Search<ElasticSearchTask>(s => s
-                .Query(q => q
-                    .Bool(b => b
-                        .Should(
-                            bs => bs.Term(p => p.UserId, userId)
-            )))).Documents;
+            var result = _uow.Tasks.Search<ElasticSearchTask>(
+            //s => s
+            //    .Query(q => q
+            //        .Bool(b => b
+            //            .Should(
+            //                bs => bs.Term(p => p.UserId, userId)
+            //)))
+            ).Documents;
 
             return result;
         }
 
 
-        public IEnumerable<ElasticSearchTask> GetByName(string name, int userId)
+        public IEnumerable<ElasticSearchTask> GetByName(string name)
         {
-            var result = _client.Search<ElasticSearchTask>(s => s
+            var result = _uow.Tasks.Search<ElasticSearchTask>(s => s
                 .Query(q => q.Bool(b => b
                     .Must(/*bs => bs.Term(p => p.UserId, userId),*/
                           bs => bs.Term(p => p.Name, name.ToLower()))))).Documents;

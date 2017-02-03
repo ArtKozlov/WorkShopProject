@@ -81,12 +81,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElasticSearch\TaskElasticClient.cs" />
+    <Compile Include="ElasticSearch\UnitOfWorkElasticSearch.cs" />
     <Compile Include="Entities\ElasticSearch\ElasticSearchTask.cs" />
     <Compile Include="Entities\ElasticSearch\ElasticSearchUser.cs" />
     <Compile Include="Entities\NHibernate\Task.cs" />
     <Compile Include="Entities\NHibernate\User.cs" />
     <Compile Include="Interfaces\ElasticSearch\ITaskElasticSearchRepository.cs" />
+    <Compile Include="Interfaces\ElasticSearch\IUnitOfWorkElasticSearch.cs" />
     <Compile Include="Mapping\NHibernate\TaskMap.cs" />
     <Compile Include="Interfaces\NHibernate\ITaskRepository.cs" />
     <Compile Include="Mapping\NHibernate\UserMap.cs" />

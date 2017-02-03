@@ -15,6 +15,7 @@ namespace ToDoLogic.Mapping
                 cfg.CreateMap<TaskDto, Task>();
                 cfg.CreateMap<TaskDto, ElasticSearchTask>();
                 cfg.CreateMap<ElasticSearchTask, TaskDto>();
+                cfg.CreateMap<UserDto, User>();
 
             });
         }

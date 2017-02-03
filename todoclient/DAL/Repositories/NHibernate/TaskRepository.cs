@@ -77,7 +77,7 @@ namespace DAL.Repositories.NHibernate
                     var entity = session.Query<Task>().FirstOrDefault(i => i.Id == task.Id);
                     entity.Name = task.Name;
                     entity.IsCompleted = task.IsCompleted;
-                    entity.UserId = task.UserId;
+                    entity.User = task.User;
                     session.Save(entity);
                     transaction.Commit();
                 }
