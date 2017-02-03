@@ -24,18 +24,27 @@ namespace ToDoLogic.Services
 
         private readonly ITaskRepository _taskRepository;
         
-        private ITaskElasticSearchRepository _taskElasticSearchRepository;
+        private readonly ITaskElasticSearchRepository _taskElasticSearchRepository;
 
-       // private ProxyService _proxyService;
+        private readonly IMapper _mapper;
+
+        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository itemQueries)
+        {
+            _mapper = DtoMapperConfiguration.GetConfiguration().CreateMapper();
+            _taskRepository = itemRepository;
+            _taskElasticSearchRepository = itemQueries;
+
+        }
         /// <summary>
         /// Creates the service.
         /// </summary>
-        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository itemQueries)
-        {
-            _taskRepository = itemRepository;
-            _taskElasticSearchRepository = itemQueries;
+        //public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository itemQueries, IMapper mapper)
+        //{
+        //    _mapper = mapper;
+        //    _taskRepository = itemRepository;
+        //    _taskElasticSearchRepository = itemQueries;
             
-        }
+        //}
 
         /// <summary>
         /// Gets all todos for the user.
@@ -44,8 +53,7 @@ namespace ToDoLogic.Services
         /// <returns>The list of todos.</returns>
         public IList<TaskDto> GetTasks()
         {
-            MapConfig.CreateMapTaskToTaskDto();
-            var listOfTasks = _taskRepository.GetTasks().Select(i => Mapper.Map<TaskDto>(i)).ToList();
+            var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
             return listOfTasks;
 
             // so fast. 
@@ -55,9 +63,8 @@ namespace ToDoLogic.Services
 
         public IList<TaskDto> GetTaskByName(string name, int userId)
         {
-
-            MapConfig.CreateMapElasticSearchTaskToTaskDto();
-            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name, userId).Select(i => Mapper.Map<TaskDto>(i)).ToList();
+            
+            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name, userId).Select(i => _mapper.Map<TaskDto>(i)).ToList();
             return result;
 
         }
@@ -72,12 +79,10 @@ namespace ToDoLogic.Services
             { 
                 task.CreatedDate = DateTime.Now;
                           
-                MapConfig.CreateMapTaskDtoToTask();
-                _taskRepository.Create(Mapper.Map<TaskDto, Task>(task));
-
-                MapConfig.CreateMapTaskDtoToElasticSearchTask();
+                _taskRepository.Create(_mapper.Map<TaskDto, Task>(task));
+                
                 task.Id = _taskRepository.GetTasks().Last()?.Id ?? 1;
-                _taskElasticSearchRepository.Create(Mapper.Map<ElasticSearchTask>(task));
+                _taskElasticSearchRepository.Create(_mapper.Map<ElasticSearchTask>(task));
             }
 
         }
@@ -88,10 +93,8 @@ namespace ToDoLogic.Services
         /// <param name="task">The todo to update.</param>
         public void UpdateTask(TaskDto task)
         {
-            MapConfig.CreateMapTaskDtoToTask();
-            _taskRepository.Update(Mapper.Map<TaskDto, Task>(task));
-            MapConfig.CreateMapTaskDtoToElasticSearchTask();
-            _taskElasticSearchRepository.Update(Mapper.Map<ElasticSearchTask>(task));
+            _taskRepository.Update(_mapper.Map<TaskDto, Task>(task));
+            _taskElasticSearchRepository.Update(_mapper.Map<ElasticSearchTask>(task));
         }
 
         /// <summary>

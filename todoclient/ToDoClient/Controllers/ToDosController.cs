@@ -15,10 +15,12 @@ namespace ToDoClient.Controllers
     public class ToDosController : ApiController
     {
         private readonly IToDoService _toDoService;
+        private readonly IMapper _mapper;
        // private readonly IUserService _userService;
 
         public ToDosController(IToDoService toDoService)
         {
+            _mapper = ClientMapperConfiguration.GetConfiguration().CreateMapper();
             _toDoService = toDoService;
         }
 
@@ -29,8 +31,7 @@ namespace ToDoClient.Controllers
         public IList<TaskViewModel> Get()
         {
            // var userId = _userService.GetOrCreateUser();
-           MapConfig.CreateMapTaskDtoToTaskViewModel();
-            return _toDoService.GetTasks().Select(t => Mapper.Map<TaskViewModel>(t)).ToList();
+            return _toDoService.GetTasks().Select(t => _mapper.Map<TaskViewModel>(t)).ToList();
         }
         /// <summary>
         /// Returns all todo-items for the current user.
@@ -39,8 +40,7 @@ namespace ToDoClient.Controllers
         public IList<TaskViewModel> Get(string name)
         {
             // var userId = _userService.GetOrCreateUser();
-            MapConfig.CreateMapTaskDtoToTaskViewModel();
-            return _toDoService.GetTaskByName(name, 327).Select(t => Mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
+            return _toDoService.GetTaskByName(name, 327).Select(t => _mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
         }
         /// <summary>
         /// Updates the existing todo-item.
@@ -49,8 +49,7 @@ namespace ToDoClient.Controllers
         public void Put(TaskViewModel taskViewModel)
         {
            // todo.UserId = _userService.GetOrCreateUser();
-           MapConfig.CreateMapTaskViewModelToTaskDto();
-            _toDoService.UpdateTask(Mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
+            _toDoService.UpdateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
 
         /// <summary>
@@ -69,8 +68,7 @@ namespace ToDoClient.Controllers
         public void Post(TaskViewModel taskViewModel)
         {
             //todo.UserId = _userService.GetOrCreateUser();
-            MapConfig.CreateMapTaskViewModelToTaskDto();
-            _toDoService.CreateTask(Mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
+            _toDoService.CreateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
     }
 }

@@ -49,7 +49,7 @@
     <Compile Include="DTO\UserDto.cs" />
     <Compile Include="Interfaces\IToDoService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="Mapping\MapConfig.cs" />
+    <Compile Include="Mapping\DtoMapperConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ToDoService.cs" />
     <Compile Include="Services\UserService.cs" />

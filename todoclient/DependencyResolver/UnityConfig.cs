@@ -4,6 +4,7 @@ using DAL.Repositories.ElasticSearch;
 using DAL.Repositories.NHibernate;
 using Microsoft.Practices.Unity;
 using ToDoLogic.Interfaces;
+using ToDoLogic.Mapping;
 using ToDoLogic.Services;
 
 namespace DependencyResolver
