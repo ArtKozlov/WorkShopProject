@@ -1,8 +1,10 @@
-﻿using DAL.Interfaces.ElasticSearch;
+﻿using DAL.ElasticSearch;
+using DAL.Interfaces.ElasticSearch;
 using DAL.Interfaces.NHibernate;
 using DAL.Repositories.ElasticSearch;
 using DAL.Repositories.NHibernate;
 using Microsoft.Practices.Unity;
+using Nest;
 using ToDoLogic.Interfaces;
 using ToDoLogic.Mapping;
 using ToDoLogic.Services;
@@ -17,6 +19,7 @@ namespace DependencyResolver
             container.RegisterType<IToDoService, ToDoService>();
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<ITaskElasticSearchRepository, TaskElasticSearchRepository>();
+            container.RegisterType<ElasticClient, TaskElasticClient>();
 
             return container;
         }

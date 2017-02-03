@@ -17,10 +17,6 @@ namespace ToDoLogic.Services
     /// </summary>
     public class ToDoService : IToDoService
     {
-        /// <summary>
-        /// The service URL.
-        /// </summary>
-        //private readonly string _serviceApiUrl = ConfigurationManager.AppSettings["ToDoServiceUrl"];
 
         private readonly ITaskRepository _taskRepository;
         

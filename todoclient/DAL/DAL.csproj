@@ -81,8 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElasticSearch\ElasticSearchConfig.cs" />
-    <Compile Include="ElasticSearch\ElasticSearchConfigSection.cs" />
+    <Compile Include="ElasticSearch\TaskElasticClient.cs" />
     <Compile Include="Entities\ElasticSearch\ElasticSearchTask.cs" />
     <Compile Include="Entities\ElasticSearch\ElasticSearchUser.cs" />
     <Compile Include="Entities\NHibernate\Task.cs" />
