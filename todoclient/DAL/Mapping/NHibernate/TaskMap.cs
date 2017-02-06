@@ -7,13 +7,12 @@ namespace DAL.Mapping.NHibernate
     {
         public TaskMap()
         {
-            Table("Task");
+            //Table("Task");
             Id(x => x.Id).Column("Id").Not.Nullable().GeneratedBy.Increment(); 
             Map(x => x.Name).Column("Name").Nullable();
             Map(x => x.IsCompleted).Column("IsCompleted").Nullable();
             Map(x => x.CreatedDate).Column("CreatedDate").Nullable();
-           // Map(x => x.User).Column("User").Nullable();
-            References(x => x.User).Cascade.SaveUpdate();
+            References(x => x.User).Cascade.SaveUpdate().Not.LazyLoad();
         }
     }
 }

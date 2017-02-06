@@ -88,13 +88,17 @@
     <Compile Include="Entities\NHibernate\User.cs" />
     <Compile Include="Interfaces\ElasticSearch\ITaskElasticSearchRepository.cs" />
     <Compile Include="Interfaces\ElasticSearch\IUnitOfWorkElasticSearch.cs" />
+    <Compile Include="Interfaces\ElasticSearch\IUserElasticSearchRepository.cs" />
+    <Compile Include="Interfaces\NHibernate\IUserRepository.cs" />
     <Compile Include="Mapping\NHibernate\TaskMap.cs" />
     <Compile Include="Interfaces\NHibernate\ITaskRepository.cs" />
     <Compile Include="Mapping\NHibernate\UserMap.cs" />
     <Compile Include="NHibernate\NHibernateHelper .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ElasticSearch\TaskElasticSearchRepository.cs" />
+    <Compile Include="Repositories\ElasticSearch\UserElasticSearchRepository.cs" />
     <Compile Include="Repositories\NHibernate\TaskRepository.cs" />
+    <Compile Include="Repositories\NHibernate\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

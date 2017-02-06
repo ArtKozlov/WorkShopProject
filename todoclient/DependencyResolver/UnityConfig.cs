@@ -20,6 +20,8 @@ namespace DependencyResolver
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<ITaskElasticSearchRepository, TaskElasticSearchRepository>();
             container.RegisterType<IUnitOfWorkElasticSearch, UnitOfWorkElasticSearch>();
+            container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IUserElasticSearchRepository, UserElasticSearchRepository>();
 
             return container;
         }

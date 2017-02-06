@@ -18,5 +18,15 @@ namespace DAL.ElasticSearch
                         .DefaultIndex("todorepository").DefaultTypeNameInferrer(t => "task"));
             }
         }
+
+        public ElasticClient Users
+        {
+            get
+            {
+                return new ElasticClient(new ConnectionSettings(
+                    new Uri(ConfigurationManager.AppSettings["ElasticSearchUrl"]))
+                        .DefaultIndex("todorepository").DefaultTypeNameInferrer(t => "user"));
+            }
+        }
     }
 }

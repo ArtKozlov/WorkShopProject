@@ -10,6 +10,7 @@ namespace DAL.Interfaces.ElasticSearch
     public interface IUnitOfWorkElasticSearch
     {
         ElasticClient Tasks { get; }
+        ElasticClient Users { get; }
 
     }
 }

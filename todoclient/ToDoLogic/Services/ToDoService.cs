@@ -17,15 +17,18 @@ namespace ToDoLogic.Services
     /// </summary>
     public class ToDoService : IToDoService
     {
-
+        private readonly IUserRepository _userRepository;
         private readonly ITaskRepository _taskRepository;
-        
+        private readonly IUserElasticSearchRepository _userElasticSearchRepository;
         private readonly ITaskElasticSearchRepository _taskElasticSearchRepository;
 
         private readonly IMapper _mapper;
 
-        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository taskElasticSearchRepository)
+        public ToDoService(ITaskRepository itemRepository, ITaskElasticSearchRepository taskElasticSearchRepository, 
+            IUserRepository userRepository, IUserElasticSearchRepository userElasticSearchRepository)
         {
+            _userElasticSearchRepository = userElasticSearchRepository;
+            _userRepository = userRepository;
             _mapper = DtoMapperConfiguration.GetConfiguration().CreateMapper();
             _taskRepository = itemRepository;
             _taskElasticSearchRepository = taskElasticSearchRepository;
@@ -50,8 +53,8 @@ namespace ToDoLogic.Services
         public IList<TaskDto> GetTasks()
         {
             // so fast. 
-            var listOfTasks = _taskElasticSearchRepository.GetItems().Select(i => _mapper.Map<TaskDto>(i)).ToList();
-           // var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
+           // var listOfTasks = _taskElasticSearchRepository.GetItems().Select(i => _mapper.Map<TaskDto>(i)).ToList();
+            var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
             return listOfTasks;
         }
 
@@ -70,12 +73,24 @@ namespace ToDoLogic.Services
         public void CreateTask(TaskDto task)
         {
             if(!ReferenceEquals(task.Name, null))
-            { 
-                task.CreatedDate = DateTime.Now;
-                task.User = new UserDto {Id = 1, Name = "Dobkin", BirthDay = new DateTime(1993, 04, 03)};
-                _taskRepository.Create(_mapper.Map<TaskDto, Task>(task));
+            {
                 
-                task.Id = _taskRepository.GetTasks().Last()?.Id ?? 1;
+                //User firstUser = new User { Name = "Zheldak", BirthDay = new DateTime(1995, 03, 05)};
+                //ElasticSearchUser firstElasticUser = new ElasticSearchUser { Name = "Zheldak", BirthDay = new DateTime(1995, 03, 05) };
+
+                //_userRepository.Create(firstUser);
+
+                //firstElasticUser.Id = _userRepository.GetUsers().Last().Id;
+                //_userElasticSearchRepository.Create(firstElasticUser);
+
+                task.CreatedDate = DateTime.Now;
+                //Task newTask = _mapper.Map<TaskDto, Task>(task);
+                //User user = _userRepository.GetById(1);
+                //newTask.User = user;
+                _taskRepository.Create(_mapper.Map<TaskDto, Task>(task));
+
+               // task.Id = _taskRepository.GetTasks().Last()?.Id ?? 1;
+                task.Id = _taskRepository.GetTasks().Last().Id;
                 _taskElasticSearchRepository.Create(_mapper.Map<ElasticSearchTask>(task));
             }
 

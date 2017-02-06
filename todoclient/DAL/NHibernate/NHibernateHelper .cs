@@ -18,6 +18,7 @@ namespace DAL.NHibernate
             .Mappings(m => m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
             .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
             .BuildSessionFactory();
+            
             return sessionFactory.OpenSession();
         }
     }

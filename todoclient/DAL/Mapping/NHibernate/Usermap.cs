@@ -7,12 +7,11 @@ namespace DAL.Mapping.NHibernate
     {
         public UserMap()
         {
-            Table("User");
-            Id(x => x.Id).Column("Id").Not.Nullable().GeneratedBy.Identity();
+            //Table("User");
+            Id(x => x.Id).Column("Id").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Name).Column("Name").Nullable();
             Map(x => x.BirthDay).Column("BirthDay").Nullable();
-            HasMany(x => x.Tasks)
-                    .Inverse();
+            HasMany(x => x.Tasks).Inverse().Cascade.All().BatchSize(10);
         }
 
     }
