@@ -12,7 +12,7 @@ namespace DAL.Mapping.NHibernate
             Map(x => x.Name).Column("Name").Nullable();
             Map(x => x.IsCompleted).Column("IsCompleted").Nullable();
             Map(x => x.CreatedDate).Column("CreatedDate").Nullable();
-            References(x => x.User).Cascade.SaveUpdate().Not.LazyLoad();
+            References(x => x.User).Cascade.SaveUpdate().Fetch.Join();
         }
     }
 }

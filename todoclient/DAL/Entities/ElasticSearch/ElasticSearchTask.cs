@@ -8,6 +8,6 @@ namespace DAL.Entities.ElasticSearch
         public string Name { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; }
-        public ElasticSearchUser User { get; set; }
+        public int UserId { get; set; }
     }
 }

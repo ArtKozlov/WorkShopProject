@@ -12,16 +12,18 @@ namespace ToDoLogic.Mapping
         {
             return new MapperConfiguration(cfg => {
 
-                cfg.CreateMap<Task, TaskDto>()
-                    .ForMember(x => x.User,
-                        x => x.Ignore());
+                cfg.CreateMap<Task, TaskDto>();
                 cfg.CreateMap<TaskDto, Task>();
-                cfg.CreateMap<TaskDto, ElasticSearchTask>()
-                    .ForMember(x => x.User,
-                        x => x.Ignore());
+                cfg.CreateMap<Task, ElasticSearchTask>()
+                        .ForMember(x => x.UserId,
+                            x => x.MapFrom(src => src.User.Id));
                 cfg.CreateMap<ElasticSearchTask, TaskDto>();
+                cfg.CreateMap<ElasticSearchTask, Task>();
                 cfg.CreateMap<UserDto, User>();
                 cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<ElasticSearchUser, UserDto>();
+                cfg.CreateMap<UserDto, ElasticSearchUser>();
+                cfg.CreateMap<User, ElasticSearchUser>();
 
             });
         }

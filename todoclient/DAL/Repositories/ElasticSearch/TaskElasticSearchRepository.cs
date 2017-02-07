@@ -4,6 +4,7 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading;
 using DAL.ElasticSearch;
 
 namespace DAL.Repositories.ElasticSearch
@@ -40,6 +41,7 @@ namespace DAL.Repositories.ElasticSearch
 
         public IEnumerable<ElasticSearchTask> GetItems()
         {
+            
             var result = _uow.Tasks.Search<ElasticSearchTask>(
             //s => s
             //    .Query(q => q
@@ -53,12 +55,18 @@ namespace DAL.Repositories.ElasticSearch
         }
 
 
-        public IEnumerable<ElasticSearchTask> GetByName(string name)
+        public ISearchResponse<ElasticSearchTask> GetByName(string name)
         {
-            var result = _uow.Tasks.Search<ElasticSearchTask>(s => s
-                .Query(q => q.Bool(b => b
-                    .Must(/*bs => bs.Term(p => p.UserId, userId),*/
-                          bs => bs.Term(p => p.Name, name.ToLower()))))).Documents;
+            var result = _uow.Tasks.Search<ElasticSearchTask>(
+                s => s
+                .Query(q => q
+                    .Match(m => m
+                    .Field(f => f.Name.Suffix("standard")).Query("23")))
+                    //.Highlight(h => h
+                    //.PreTags("<b>")
+                    //.PostTags("</b>").Fields(f => f.Field("Name"))
+                    //)
+                    );
             return result;
         }
 
