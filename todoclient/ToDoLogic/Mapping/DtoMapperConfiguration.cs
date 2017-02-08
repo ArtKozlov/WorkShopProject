@@ -2,7 +2,6 @@
 using AutoMapper;
 using DAL.Entities.ElasticSearch;
 using DAL.Entities.NHibernate;
-using Nest;
 using ToDoLogic.DTO;
 
 namespace ToDoLogic.Mapping
@@ -13,19 +12,15 @@ namespace ToDoLogic.Mapping
         {
             return new MapperConfiguration(cfg => {
 
-                cfg.CreateMap<Task, TaskDto>();
-                cfg.CreateMap<TaskDto, Task>();
-                cfg.CreateMap<TaskDto, ElasticSearchTask>();
+                cfg.CreateMap<TaskDto, ElasticSearchTask>().ReverseMap();
+                cfg.CreateMap<UserDto, User>().ReverseMap();
+                cfg.CreateMap<UserDto, ElasticSearchUser>().ReverseMap();
+                cfg.CreateMap<User, ElasticSearchUser>();
+                cfg.CreateMap<ElasticSearchTask, Task>();
+                cfg.CreateMap<Task, TaskDto>().ReverseMap();
                 cfg.CreateMap<Task, ElasticSearchTask>()
                         .ForMember(x => x.UserId,
                             x => x.MapFrom(src => src.User.Id));
-                cfg.CreateMap<ElasticSearchTask, TaskDto>();
-                cfg.CreateMap<ElasticSearchTask, Task>();
-                cfg.CreateMap<UserDto, User>();
-                cfg.CreateMap<User, UserDto>();
-                cfg.CreateMap<ElasticSearchUser, UserDto>();
-                cfg.CreateMap<UserDto, ElasticSearchUser>();
-                cfg.CreateMap<User, ElasticSearchUser>();
 
             });
         }

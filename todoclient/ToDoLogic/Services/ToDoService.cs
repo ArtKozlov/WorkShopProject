@@ -44,14 +44,14 @@ namespace ToDoLogic.Services
         /// <returns>The list of todos.</returns>
         public IEnumerable<TaskDto> GetTasks()
         {
-            var listOfTasks = _taskRepository.GetTasks().Select(task=> _mapper.Map<TaskDto>(task)).ToList();
+            List<TaskDto> listOfTasks = _taskRepository.GetTasks().Select(task=> _mapper.Map<TaskDto>(task)).ToList();
             return listOfTasks;
         }
 
         public IEnumerable<TaskDto> GetTaskByName(string name)
         {
             
-            var result = _taskElasticSearchRepository.GetByName(name).Select(task => _mapper.Map<TaskDto>(task)).ToList();
+            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name).Select(task => _mapper.Map<TaskDto>(task)).ToList();
             return result;
 
         }

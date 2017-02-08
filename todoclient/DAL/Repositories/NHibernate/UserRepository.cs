@@ -32,7 +32,7 @@ namespace DAL.Repositories.NHibernate
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var item = session.Query<User>().FirstOrDefault(i => i.Id == key);
+                    User item = session.Query<User>().FirstOrDefault(i => i.Id == key);
                     if (!ReferenceEquals(item, null))
                     {
                         session.Delete(item);
@@ -46,7 +46,7 @@ namespace DAL.Repositories.NHibernate
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var item = session.Query<User>().FirstOrDefault(i => i.Id == key);
+                User item = session.Query<User>().FirstOrDefault(i => i.Id == key);
 
                 if (!ReferenceEquals(item, null))
                 {
@@ -60,7 +60,7 @@ namespace DAL.Repositories.NHibernate
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var result = session.Query<User>().ToList();
+                List<User> result = session.Query<User>().ToList();
                 return result;
             }
         }
@@ -71,7 +71,7 @@ namespace DAL.Repositories.NHibernate
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var entity = session.Query<User>().FirstOrDefault(i => i.Id == user.Id);
+                    User entity = session.Query<User>().FirstOrDefault(i => i.Id == user.Id);
                     entity.Name = user.Name;
                     entity.BirthDay = user.BirthDay;
                     entity.Tasks = user.Tasks;

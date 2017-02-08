@@ -39,7 +39,7 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<TaskViewModel> Get(string name)
         {
-            var result = _toDoService.GetTaskByName(name).Select(task => _mapper.Map<TaskViewModel>(task)).ToList();
+            List<TaskViewModel> result = _toDoService.GetTaskByName(name).Select(task => _mapper.Map<TaskViewModel>(task)).ToList();
             return result;
         }
         /// <summary>

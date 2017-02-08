@@ -29,7 +29,7 @@ namespace DAL.Repositories.ElasticSearch
         {
             IEnumerable<ElasticSearchUser> result = _uow.Users.Search<ElasticSearchUser>(s => s
                 .Query(q => q.Bool(b => b
-                   .Must(/*bs => bs.Term(p => p.UserId, userId),*/
+                   .Must(
                          bs => bs.Term(p => p.Name, name.ToLower()))))).Documents;
             return result;
         }
@@ -37,12 +37,6 @@ namespace DAL.Repositories.ElasticSearch
         public IEnumerable<ElasticSearchUser> GetItems()
         {
             var result = _uow.Users.Search<ElasticSearchUser>(
-            //s => s
-            //    .Query(q => q
-            //        .Bool(b => b
-            //            .Should(
-            //                bs => bs.Term(p => p.UserId, userId)
-            //)))
             ).Documents;
 
             return result;

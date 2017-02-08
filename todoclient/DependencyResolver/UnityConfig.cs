@@ -15,7 +15,7 @@ namespace DependencyResolver
     {
         public static IUnityContainer BuildUnityContainer()
         {
-            var container = new UnityContainer();
+            UnityContainer container = new UnityContainer();
             container.RegisterType<IToDoService, ToDoService>();
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<ITaskElasticSearchRepository, TaskElasticSearchRepository>();

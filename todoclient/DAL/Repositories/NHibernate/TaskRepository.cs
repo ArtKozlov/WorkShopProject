@@ -35,10 +35,10 @@ namespace DAL.Repositories.NHibernate
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    var item = session.Query<Task>().FirstOrDefault(i => i.Id == key);
-                    if (!ReferenceEquals(item, null))
+                    Task task = session.Query<Task>().FirstOrDefault(i => i.Id == key);
+                    if (!ReferenceEquals(task, null))
                     {
-                        session.Delete(item);
+                        session.Delete(task);
                         transaction.Commit();
                     }
                 }
@@ -50,11 +50,11 @@ namespace DAL.Repositories.NHibernate
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                    var item = session.Query<Task>().FirstOrDefault(i => i.Id == key);
+                    Task task = session.Query<Task>().FirstOrDefault(i => i.Id == key);
 
-                    if (!ReferenceEquals(item, null))
+                    if (!ReferenceEquals(task, null))
                     {
-                        return item;
+                        return task;
                     }
             }
             return null;
@@ -64,8 +64,8 @@ namespace DAL.Repositories.NHibernate
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var result =  session.Query<Task>().ToList();
-                return result;
+                var listOfTasks =  session.Query<Task>().ToList();
+                return listOfTasks;
             }
         }
         

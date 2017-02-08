@@ -11,8 +11,7 @@ namespace ToDoClient.Mapping
         {
             return new MapperConfiguration(cfg => {
 
-                cfg.CreateMap<TaskViewModel, TaskDto>();
-                cfg.CreateMap<TaskDto, TaskViewModel>();
+                cfg.CreateMap<TaskViewModel, TaskDto>().ReverseMap();
 
             });
         }
