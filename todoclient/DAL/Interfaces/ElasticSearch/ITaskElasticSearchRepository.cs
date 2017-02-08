@@ -9,7 +9,7 @@ namespace DAL.Interfaces.ElasticSearch
     {
         void Create(ElasticSearchTask item);
         void Update(ElasticSearchTask item);
-        ISearchResponse<ElasticSearchTask> GetByName(string name);
+        IEnumerable<ElasticSearchTask> GetByName(string name);
         void Delete(int key);
         IEnumerable<ElasticSearchTask> GetItems();
     }

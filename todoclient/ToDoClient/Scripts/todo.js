@@ -114,8 +114,7 @@ $(function () {
 
             tasksManager.loadSearchedTasks(searchedName)
                 .done(function (tasks) {
-                    tasksManager.displayTasks("#tasks > tbody", tasks);
-                });
+                    tasksManager.displayTasks("#tasks > tbody", tasks);});
         }
     });
     // bind update task checkbox click handler

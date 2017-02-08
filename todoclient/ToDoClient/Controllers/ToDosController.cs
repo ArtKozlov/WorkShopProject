@@ -6,6 +6,7 @@ using ToDoClient.Models;
 using ToDoLogic.Interfaces;
 using AutoMapper;
 using ToDoLogic.DTO;
+using Nest;
 
 namespace ToDoClient.Controllers
 {
@@ -30,8 +31,7 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<TaskViewModel> Get()
         {
-           // var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetTasks().Select(t => _mapper.Map<TaskViewModel>(t)).ToList();
+            return _toDoService.GetTasks().Select(task => _mapper.Map<TaskViewModel>(task)).ToList();
         }
         /// <summary>
         /// Returns all todo-items for the current user.
@@ -39,8 +39,8 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<TaskViewModel> Get(string name)
         {
-            // var userId = _userService.GetOrCreateUser();
-            return _toDoService.GetTaskByName(name).Select(t => _mapper.Map<TaskDto, TaskViewModel>(t)).ToList();
+            var result = _toDoService.GetTaskByName(name).Select(task => _mapper.Map<TaskViewModel>(task)).ToList();
+            return result;
         }
         /// <summary>
         /// Updates the existing todo-item.
@@ -48,7 +48,6 @@ namespace ToDoClient.Controllers
         /// <param name="taskViewModel">The todo-item to update.</param>
         public void Put(TaskViewModel taskViewModel)
         {
-           // todo.UserId = _userService.GetOrCreateUser();
             _toDoService.UpdateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
 
@@ -67,7 +66,6 @@ namespace ToDoClient.Controllers
         /// <param name="taskViewModel">The todo-item to create.</param>
         public void Post(TaskViewModel taskViewModel)
         {
-            //todo.UserId = _userService.GetOrCreateUser();
             _toDoService.CreateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
         }
     }

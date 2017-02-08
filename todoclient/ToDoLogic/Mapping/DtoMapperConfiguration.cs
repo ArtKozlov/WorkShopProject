@@ -2,6 +2,7 @@
 using AutoMapper;
 using DAL.Entities.ElasticSearch;
 using DAL.Entities.NHibernate;
+using Nest;
 using ToDoLogic.DTO;
 
 namespace ToDoLogic.Mapping
@@ -14,6 +15,7 @@ namespace ToDoLogic.Mapping
 
                 cfg.CreateMap<Task, TaskDto>();
                 cfg.CreateMap<TaskDto, Task>();
+                cfg.CreateMap<TaskDto, ElasticSearchTask>();
                 cfg.CreateMap<Task, ElasticSearchTask>()
                         .ForMember(x => x.UserId,
                             x => x.MapFrom(src => src.User.Id));

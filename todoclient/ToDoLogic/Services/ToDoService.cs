@@ -41,18 +41,17 @@ namespace ToDoLogic.Services
         /// <summary>
         /// Gets all todos for the user.
         /// </summary>
-        /// <param name="userId">The User Id.</param>
         /// <returns>The list of todos.</returns>
-        public IList<TaskDto> GetTasks()
+        public IEnumerable<TaskDto> GetTasks()
         {
-            var listOfTasks = _taskRepository.GetTasks().Select(i => _mapper.Map<TaskDto>(i)).ToList();
+            var listOfTasks = _taskRepository.GetTasks().Select(task=> _mapper.Map<TaskDto>(task)).ToList();
             return listOfTasks;
         }
 
-        public IList<TaskDto> GetTaskByName(string name)
+        public IEnumerable<TaskDto> GetTaskByName(string name)
         {
             
-            List<TaskDto> result = _taskElasticSearchRepository.GetByName(name).Documents.Select(i => _mapper.Map<TaskDto>(i)).ToList();
+            var result = _taskElasticSearchRepository.GetByName(name).Select(task => _mapper.Map<TaskDto>(task)).ToList();
             return result;
 
         }
