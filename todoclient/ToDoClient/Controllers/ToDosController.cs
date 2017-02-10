@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
-using ToDoClient.Mapping;
 using ToDoClient.Models;
 using ToDoLogic.Interfaces;
 using AutoMapper;
+using todoclient.Mapping.Interface;
 using ToDoLogic.DTO;
-using Nest;
 
 namespace ToDoClient.Controllers
 {
@@ -19,9 +19,9 @@ namespace ToDoClient.Controllers
         private readonly IMapper _mapper;
        // private readonly IUserService _userService;
 
-        public ToDosController(IToDoService toDoService)
+        public ToDosController(IToDoService toDoService, IClientMapper mapper)
         {
-            _mapper = ClientMapperConfiguration.GetConfiguration().CreateMapper();
+            _mapper = mapper;
             _toDoService = toDoService;
         }
 
@@ -39,6 +39,7 @@ namespace ToDoClient.Controllers
         /// <returns>The list of todo-items.</returns>
         public IList<TaskViewModel> Get(string name)
         {
+            
             List<TaskViewModel> result = _toDoService.GetTaskByName(name).Select(task => _mapper.Map<TaskViewModel>(task)).ToList();
             return result;
         }
@@ -48,7 +49,7 @@ namespace ToDoClient.Controllers
         /// <param name="taskViewModel">The todo-item to update.</param>
         public void Put(TaskViewModel taskViewModel)
         {
-            _toDoService.UpdateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
+            _toDoService.UpdateTask(_mapper.Map<TaskDto>(taskViewModel));
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace ToDoClient.Controllers
         /// <param name="taskViewModel">The todo-item to create.</param>
         public void Post(TaskViewModel taskViewModel)
         {
-            _toDoService.CreateTask(_mapper.Map<TaskViewModel, TaskDto>(taskViewModel));
+            _toDoService.CreateTask(_mapper.Map<TaskDto>(taskViewModel));
         }
     }
 }

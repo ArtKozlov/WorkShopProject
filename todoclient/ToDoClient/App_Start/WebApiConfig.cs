@@ -1,5 +1,4 @@
 ﻿using System.Web.Http;
-using DependencyResolver;
 using ToDoClient.DependencyResolver;
 
 namespace ToDoClient

@@ -160,11 +160,13 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ToDosController.cs" />
+    <Compile Include="DependencyResolver\UnityConfig.cs" />
     <Compile Include="DependencyResolver\UnityResolver.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\ClientMapperConfiguration.cs" />
+    <Compile Include="Mapping\ClientMapper.cs" />
+    <Compile Include="Mapping\Interface\IClientMapper.cs" />
     <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -183,9 +185,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj">
-      <Project>{5cee2443-9251-400d-9d2b-728110c8cd19}</Project>
-      <Name>DependencyResolver</Name>
+    <ProjectReference Include="..\ToDoDataAccess\ToDoDataAccess.csproj">
+      <Project>{d09cf800-7db0-4459-93bd-ee0b86b025e4}</Project>
+      <Name>ToDoDataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToDoLogic\ToDoLogic.csproj">
       <Project>{0756bf9b-112e-4c94-a837-667e40081536}</Project>
