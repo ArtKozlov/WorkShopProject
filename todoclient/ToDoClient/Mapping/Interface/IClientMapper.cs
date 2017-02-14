@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 
-namespace todoclient.Mapping.Interface
+namespace ToDoClient.Mapping.Interface
 {
     public interface IClientMapper : IMapper
     {

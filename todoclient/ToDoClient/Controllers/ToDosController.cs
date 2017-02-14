@@ -5,7 +5,7 @@ using System.Web.Http;
 using ToDoClient.Models;
 using ToDoLogic.Interfaces;
 using AutoMapper;
-using todoclient.Mapping.Interface;
+using ToDoClient.Mapping.Interface;
 using ToDoLogic.DTO;
 
 namespace ToDoClient.Controllers

@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElasticSearch\ElasticSearchHelper.cs" />
     <Compile Include="Interfaces\NHibernate\IUnitOfWork.cs" />
     <Compile Include="Repositories\ElasticSearch\UnitOfWorkElastic.cs" />
     <Compile Include="Entities\ElasticSearch\Task.cs" />
@@ -96,8 +97,8 @@
     <Compile Include="Mapping\NHibernate\UserMap.cs" />
     <Compile Include="NHibernate\NHibernateHelper .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ElasticSearch\TaskElasticSearchRepository.cs" />
-    <Compile Include="Repositories\ElasticSearch\UserElasticSearchRepository.cs" />
+    <Compile Include="Repositories\ElasticSearch\TaskElasticRepository.cs" />
+    <Compile Include="Repositories\ElasticSearch\UserElasticRepository.cs" />
     <Compile Include="Repositories\NHibernate\TaskRepository.cs" />
     <Compile Include="Repositories\NHibernate\UnitOfWork.cs" />
     <Compile Include="Repositories\NHibernate\UserRepository.cs" />

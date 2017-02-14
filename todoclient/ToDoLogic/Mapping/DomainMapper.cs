@@ -1,7 +1,5 @@
 ﻿using System;
 using AutoMapper;
-using ToDoDataAccess.Entities.ElasticSearch;
-using ToDoDataAccess.Entities.NHibernate;
 using ToDoLogic.DTO;
 using ToDoLogic.Interfaces;
 using Task = ToDoDataAccess.Entities.ElasticSearch.Task;
@@ -12,6 +10,7 @@ namespace ToDoLogic.Mapping
     public class DomainMapper : IDomainMapper
     {
         private IMapper _mapper;
+
         private MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
         {
 

@@ -18,7 +18,7 @@ namespace ToDoLogic.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUnitOfWorkElastic _unitOfWorkElastic;
         private readonly IDomainMapper _mapper;
-
+        
         /// <summary>
         /// Creates the service.
         /// </summary>

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Configuration;
-using AutoMapper;
-using ToDoDataAccess.Repositories.ElasticSearch;
+﻿using ToDoDataAccess.Repositories.ElasticSearch;
 using Microsoft.Practices.Unity;
-using Nest;
-using todoclient.Mapping;
-using todoclient.Mapping.Interface;
+using NHibernate;
+using ToDoClient.Mapping;
+using ToDoClient.Mapping.Interface;
 using ToDoDataAccess.Interfaces.ElasticSearch;
 using ToDoDataAccess.Interfaces.NHibernate;
 using ToDoDataAccess.Repositories.NHibernate;
@@ -20,15 +17,11 @@ namespace ToDoClient.DependencyResolver
         public static IUnityContainer BuildUnityContainer()
         {
             UnityContainer container = new UnityContainer();
-            container.RegisterType<IToDoService, ToDoService>();
-            //  container.RegisterType<ITaskRepository, TaskRepository>();
-            // container.RegisterType<ITaskElasticRepository, TaskElasticRepository>();
-            // container.RegisterType<IUserRepository, UserRepository>();
-            // container.RegisterType<IUserElasticRepository, UserElasticRepository>();
-            container.RegisterType<IUnitOfWorkElastic, UnitOfWorkElastic>();
-            container.RegisterType<IUnitOfWork, UnitOfWork>();
-            container.RegisterType<IClientMapper, ClientMapper>();
-            container.RegisterType<IDomainMapper, DomainMapper>();
+            container.RegisterType<IToDoService, ToDoService>(new PerResolveLifetimeManager());
+            container.RegisterType<IUnitOfWorkElastic, UnitOfWorkElastic>(new PerResolveLifetimeManager());
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new PerResolveLifetimeManager());
+            container.RegisterType<IClientMapper, ClientMapper>(new PerResolveLifetimeManager());
+            container.RegisterType<IDomainMapper, DomainMapper>(new PerResolveLifetimeManager());
 
             return container;
         }

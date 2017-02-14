@@ -11,16 +11,18 @@ namespace ToDoDataAccess.Repositories.NHibernate
 {
     public class UserRepository : IUserRepository
     {
+        private readonly ISession _session = NHibernateHelper.OpenSession();
+
         public void Create(User user)
         {
             if (ReferenceEquals(user, null))
                 throw new ArgumentNullException();
 
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (_session)
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                using (ITransaction transaction = _session.BeginTransaction())
                 {
-                    session.Save(user);
+                    _session.Save(user);
                     transaction.Commit();
                 }
             }
@@ -28,14 +30,14 @@ namespace ToDoDataAccess.Repositories.NHibernate
 
         public void Delete(int key)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (_session)
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                using (ITransaction transaction = _session.BeginTransaction())
                 {
-                    User item = session.Query<User>().FirstOrDefault(i => i.Id == key);
+                    User item = _session.Query<User>().FirstOrDefault(i => i.Id == key);
                     if (!ReferenceEquals(item, null))
                     {
-                        session.Delete(item);
+                        _session.Delete(item);
                         transaction.Commit();
                     }
                 }
@@ -44,9 +46,9 @@ namespace ToDoDataAccess.Repositories.NHibernate
 
         public User GetById(int key)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (_session)
             {
-                User item = session.Query<User>().FirstOrDefault(i => i.Id == key);
+                User item = _session.Query<User>().FirstOrDefault(i => i.Id == key);
 
                 if (!ReferenceEquals(item, null))
                 {
@@ -58,24 +60,24 @@ namespace ToDoDataAccess.Repositories.NHibernate
 
         public IEnumerable<User> GetUsers()
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (_session)
             {
-                List<User> result = session.Query<User>().ToList();
+                List<User> result = _session.Query<User>().ToList();
                 return result;
             }
         }
 
         public void Update(User user)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (_session)
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                using (ITransaction transaction = _session.BeginTransaction())
                 {
-                    User entity = session.Query<User>().FirstOrDefault(i => i.Id == user.Id);
+                    User entity = _session.Query<User>().FirstOrDefault(i => i.Id == user.Id);
                     entity.Name = user.Name;
                     entity.BirthDay = user.BirthDay;
                     entity.Tasks = user.Tasks;
-                    session.Save(entity);
+                    _session.Save(entity);
                     transaction.Commit();
                 }
             }

@@ -1,10 +1,10 @@
 ﻿using System;
 using AutoMapper;
-using todoclient.Mapping.Interface;
+using ToDoClient.Mapping.Interface;
 using ToDoClient.Models;
 using ToDoLogic.DTO;
 
-namespace todoclient.Mapping
+namespace ToDoClient.Mapping
 {
     public class ClientMapper : IClientMapper
     {

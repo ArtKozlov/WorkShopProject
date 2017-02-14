@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ToDoDataAccess.Entities.NHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;

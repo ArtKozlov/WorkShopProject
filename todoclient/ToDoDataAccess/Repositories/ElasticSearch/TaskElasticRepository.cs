@@ -2,10 +2,12 @@
 using ToDoDataAccess.Interfaces.ElasticSearch;
 using Nest;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace ToDoDataAccess.Repositories.ElasticSearch
 {
+
     public class TaskElasticRepository : ITaskElasticRepository
     {
 
@@ -42,7 +44,7 @@ namespace ToDoDataAccess.Repositories.ElasticSearch
             return result;
         }
 
-
+     
         public IEnumerable<Task> GetByName(string name)
         {
 
@@ -66,7 +68,7 @@ namespace ToDoDataAccess.Repositories.ElasticSearch
 
             List<Task> resultTasks = searchResponse.Documents.ToList();
 
-           // string[] listOfHits = searchResponse.HitsMetaData.Hits.Select(t => t.Highlights["name"].Highlights.FirstOrDefault()).ToArray();
+            string[] listOfHits = searchResponse.HitsMetaData.Hits.Select(t => t.Highlights["name"].Highlights.FirstOrDefault()).ToArray();
 
 
             //List<string> listOfHits = new List<string>();
@@ -80,10 +82,11 @@ namespace ToDoDataAccess.Repositories.ElasticSearch
             //        }
             //    }
             //}
-            //for (int i = 0; i < listOfHits.Length; i++)
-            //{
-            //    resultTasks[i].Name = listOfHits[i];
-            //}
+
+            for (int i = 0; i < listOfHits.Length; i++)
+            {
+                resultTasks[i].Name = listOfHits[i];
+            }
             return resultTasks;
         }
 

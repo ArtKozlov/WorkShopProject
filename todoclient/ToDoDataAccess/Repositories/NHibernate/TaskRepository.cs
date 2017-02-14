@@ -5,16 +5,14 @@ using ToDoDataAccess.Entities.NHibernate;
 using ToDoDataAccess.Interfaces.NHibernate;
 using NHibernate;
 using NHibernate.Linq;
+using ToDoDataAccess.NHibernate;
 
 namespace ToDoDataAccess.Repositories.NHibernate
 {
     public class TaskRepository : ITaskRepository
     {
-        private readonly ISession _session;
-        public TaskRepository(ISession session)
-        {
-            _session = session;
-        }
+        private readonly ISession _session = NHibernateHelper.OpenSession();
+
         public void Create(Task task)
         {
             if (ReferenceEquals(task, null))
