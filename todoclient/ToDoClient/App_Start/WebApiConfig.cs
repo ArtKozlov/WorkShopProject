@@ -1,4 +1,8 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Configuration;
+using System.Web.Http;
+using DAL.ElasticSearch;
+using Nest;
 using ToDoClient.DependencyResolver;
 
 namespace ToDoClient
@@ -20,6 +24,8 @@ namespace ToDoClient
             
             config.DependencyResolver = new UnityResolver(UnityConfig.BuildUnityContainer());
 
+            ElasticSearchHelper elasticSearchHelper = new ElasticSearchHelper();
+            elasticSearchHelper.CreateIndex();
         }
     }
 }
