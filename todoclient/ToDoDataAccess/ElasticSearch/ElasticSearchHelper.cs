@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Runtime.InteropServices;
 using Nest;
 using ToDoDataAccess.Entities.ElasticSearch;
-using Task = System.Threading.Tasks.Task;
 
-namespace DAL.ElasticSearch
+namespace ToDoDataAccess.ElasticSearch
 {
     public class ElasticSearchHelper
     {
@@ -15,7 +12,7 @@ namespace DAL.ElasticSearch
 
         public void CreateIndex()
         {
-            _elasticClient.CreateIndex("todorepository", set => set
+            _elasticClient.CreateIndex("todo", set => set
             .Settings(s => s
                 .Analysis(descriptor => descriptor
                         .Tokenizers(token => token
@@ -38,9 +35,8 @@ namespace DAL.ElasticSearch
                 ))
                 .Mappings(ms => ms
                     .Map<Task>(m => m
-                        .AutoMap())
-                    .Map<User>(m => m
                         .AutoMap()))
+
                     );
         }
     }

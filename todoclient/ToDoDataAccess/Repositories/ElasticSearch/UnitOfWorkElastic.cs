@@ -10,7 +10,8 @@ namespace ToDoDataAccess.Repositories.ElasticSearch
     {
         private readonly ElasticClient _elasticClient = new ElasticClient(new ConnectionSettings(
                 new Uri(ConfigurationManager.AppSettings["ElasticSearchUrl"]))
-            .DefaultIndex("todorepository"));
+            //.DefaultIndex("todo")
+            );
 
         private ITaskElasticRepository _taskElasticRepository;
         private IUserElasticRepository _userElasticRepository;

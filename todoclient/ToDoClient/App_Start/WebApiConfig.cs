@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Http;
-using DAL.ElasticSearch;
+using ToDoDataAccess.ElasticSearch;
 using Nest;
 using ToDoClient.DependencyResolver;
 

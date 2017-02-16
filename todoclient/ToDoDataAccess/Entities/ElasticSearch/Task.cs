@@ -6,11 +6,15 @@ namespace ToDoDataAccess.Entities.ElasticSearch
     [ElasticsearchType(IdProperty = "Id", Name = "task")]
     public class Task
     {
+        [Number(Name = "Id")]
         public virtual int Id { get; set; }
-        [String(Name = "name", Analyzer = "customIndexNgramAnalyzer", SearchAnalyzer = "customSearchNgramAnalyzer", IndexOptions = IndexOptions.Offsets)]
+        [String(Name = "Name", Analyzer = "customIndexNgramAnalyzer", SearchAnalyzer = "customSearchNgramAnalyzer", IndexOptions = IndexOptions.Offsets)]
         public virtual string Name { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int UserId { get; set; }
+        [Boolean(Name = "IsCompleted", NullValue = false, Store = true)]
+        public virtual bool IsCompleted { get; set; }
+        [Date(Name = "PublishDate")]
+        public virtual DateTime CreatedDate { get; set; }
+        [Number(Name = "UserId")]
+        public virtual int UserId { get; set; }
     }
 }
