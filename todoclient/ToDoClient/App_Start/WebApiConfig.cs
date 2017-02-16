@@ -1,8 +1,5 @@
-﻿using System;
-using System.Configuration;
+﻿
 using System.Web.Http;
-using ToDoDataAccess.ElasticSearch;
-using Nest;
 using ToDoClient.DependencyResolver;
 
 namespace ToDoClient
@@ -21,11 +18,12 @@ namespace ToDoClient
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            
+
+          
             config.DependencyResolver = new UnityResolver(UnityConfig.BuildUnityContainer());
 
-            ElasticSearchHelper elasticSearchHelper = new ElasticSearchHelper();
-            elasticSearchHelper.CreateIndex();
+           // ElasticSearchHelper elasticSearchHelper = new ElasticSearchHelper();
+           // elasticSearchHelper.CreateIndex();
         }
     }
 }
